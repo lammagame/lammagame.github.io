@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>دعم لمّة</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&family=Lalezar&display=swap">
+<style>
+/* Layout: help center, one column: header, contact card, FAQ list as native details/summary */
+:root{--bg:#0E0C0B;--surface:#1A1715;--raised:#2E2824;--fg:#FFFFFF;--muted:#CDC4BB;--line:#3A332E;--accent:#FF7A2E;--orange:#FF6A13;--on-orange:#120F0D;--todo:#FF5A61;color-scheme:dark}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){--bg:#FFFBF7;--surface:#F4EEE8;--raised:#E9E1D9;--fg:#120F0D;--muted:#5E554D;--line:#DDD3C9;--accent:#C24A00;--todo:#C8141E;color-scheme:light}}
+:root[data-theme="light"]{--bg:#FFFBF7;--surface:#F4EEE8;--raised:#E9E1D9;--fg:#120F0D;--muted:#5E554D;--line:#DDD3C9;--accent:#C24A00;--todo:#C8141E;color-scheme:light}
+body{background:var(--bg);color:var(--fg);font-family:"Cairo","Segoe UI",Tahoma,sans-serif;font-size:17px;line-height:1.8;margin:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:68ch;margin:0 auto;padding-block:40px 72px;display:grid;gap:24px}
+.logo{font-family:"Lalezar","Cairo",sans-serif;font-weight:400;font-size:44px;line-height:1.3;margin:0}
+.logo span{color:var(--orange)}
+h1{font-weight:900;font-size:clamp(26px,5vw,34px);line-height:1.3;margin:0;text-wrap:balance}
+.lead{color:var(--muted);margin:0}
+.contact{background:var(--surface);border-radius:20px;padding:18px 20px;display:grid;gap:6px}
+.contact b{font-size:19px}
+.todo{color:var(--todo);font-weight:700}
+h2{font-weight:900;font-size:20px;margin:8px 0 0}
+details{border-bottom:1px solid var(--line);padding:12px 0}
+summary{cursor:pointer;font-weight:700;list-style:none;display:flex;justify-content:space-between;gap:12px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";color:var(--accent);font-weight:900;font-size:22px;line-height:1}
+details[open] summary::after{content:"−"}
+details p,details ol,details ul{margin:8px 0 0;color:var(--muted)}
+details ol,details ul{padding-inline-start:22px}
+a{color:var(--accent)}
+summary:focus-visible{outline:3px solid var(--fg);outline-offset:4px;border-radius:6px}
+.en{direction:ltr;text-align:left;color:var(--muted);font-size:15px;border-top:1px solid var(--line);padding-top:24px}
+.en h2{color:var(--fg);font-size:17px}
+</style>
+<main dir="rtl" lang="ar">
+  <p class="logo">لمّ<span>ة</span></p>
+  <h1>مركز المساعدة</h1>
+  <p class="lead">لعبة أسئلة جماعية بين فريقين على شاشة واحدة. هنا إجابات أكثر الأسئلة شيوعاً وطريقة التواصل معنا.</p>
+
+  <div class="contact">
+    <b>تواصل معنا</b>
+    <span>البريد: <b dir="ltr">lammagame.app@gmail.com</b></span>
+    <span>انستغرام: <a href="https://www.instagram.com/lammagame.app/" target="_blank" rel="noopener" dir="ltr">@lammagame.app</a></span>
+    <span>تيك توك: <a href="https://www.tiktok.com/@lammagame.app" target="_blank" rel="noopener" dir="ltr">@lammagame.app</a></span>
+    <span class="lead">نرد عادةً خلال يومي عمل.</span>
+  </div>
+
+  <h2>طريقة اللعب</h2>
+  <details><summary>كيف نلعب؟</summary>
+    <ol>
+      <li>انقسموا لفريقين واكتبوا اسم كل فريق.</li>
+      <li>اختاروا 6 فقرات. في كل فقرة 6 أسئلة: اثنان بـ200 سهلة، اثنان بـ400 متوسطة، اثنان بـ600 صعبة.</li>
+      <li>الفريق صاحب الدور يختار سؤالاً ويجاوب خلال وقته، ثم يجاوب الفريق الثاني على نفس السؤال.</li>
+      <li>تنكشف الإجابة، وكل فريق جاوب صح ياخذ النقاط. وفي النهاية يفوز صاحب النقاط الأعلى.</li>
+    </ol></details>
+  <details><summary>ما هي أدوات المساعدة؟</summary>
+    <p>لكل فريق 3 أدوات يستعمل كل واحدة مرة واحدة في اللعبة: «أول حرف» يكشف أول حرف من الإجابة، و«غيّر السؤال» يبدّل السؤال بسؤال آخر بنفس الصعوبة، و«جوابين» يسمح للفريق بإجابتين ويكفيه أن تكون واحدة صحيحة.</p></details>
+  <details><summary>كيف تشتغل فقرة «ولا كلمة»؟</summary>
+    <p>يظهر باركود على الشاشة. واحد من الفريق يمسحه بكاميرا هاتفه، فينفتح بحث Google على هاتفه وفيه الكلمة، ويمثّلها لفريقه بدون كلام. يحتاج هاتف الممثل اتصالاً بالإنترنت.</p></details>
+  <details><summary>كيف نسوي فقرة بأسئلتنا؟</summary>
+    <p>في شاشة اختيار الفقرات اضغطوا تبويب «فقرات الجمهور» ثم «+ فقرة جديدة»، واكتبوا اسم الفقرة، ثم أضيفوا أسئلة بقدر ما تريدون: لكل سؤال إجابة ونقاط (200 أو 400 أو 600)، وتقدرون تضيفون له صورة أو فيديو من هاتفكم. تحتاج الفقرة سؤالين على الأقل من كل نقاط، وكلما زادت الأسئلة تنوعت الجولات. تتحفظ على جهازكم فقط، وتقدرون تعدّلونها أو تحذفونها من زر ✎.</p></details>
+  <details><summary>هل الأسئلة تتكرر؟</summary>
+    <p>في كل فقرة 24 سؤالاً، وكل جولة تختار 6 منها. اللعبة تتذكر الأسئلة التي ظهرت عندكم وتختار غيرها، فلا تتكرر الأسئلة إلا بعد أن تمرّوا على كل أسئلة الفقرة.</p></details>
+  <details><summary>كيف نعرضها على التلفاز؟</summary>
+    <p>اعرض شاشة هاتفك على التلفاز (AirPlay في الآيفون، أو Smart View وما يشبهه في الأندرويد)، أو العب على تابلت. اللعبة مصممة للشاشة بالعرض.</p></details>
+
+  <h2>«بدون إعلانات»</h2>
+  <details open><summary>ماذا يقدّم شراء «بدون إعلانات»؟</summary>
+    <p>كل الفقرات مجانية للجميع. «بدون إعلانات» دفعة واحدة فقط تزيل الإعلانات للأبد، بدون اشتراك ولا تجديد ولا أي خصم بعدها. السعر يظهر داخل التطبيق قبل الدفع.</p></details>
+  <details><summary>دفعت ولم تختفِ الإعلانات، أو غيّرت جهازي</summary>
+    <p>افتح «★ إزالة الإعلانات» واضغط «استعادة المشتريات»، وتأكد أنك مسجّل بنفس حساب آبل أو جوجل الذي دفعت به.</p></details>
+  <details><summary>كيف أسترد مبلغاً؟</summary>
+    <p>الدفع والاسترداد تديرهما آبل وجوجل مباشرة. للآيفون: reportaproblem.apple.com. وللأندرويد: من سجل الطلبات في Google Play، أو من صفحة المساعدة عندهم.</p></details>
+
+  <h2>الإعلانات والخصوصية</h2>
+  <details><summary>متى تظهر الإعلانات؟</summary>
+    <p>بدون شراء «بدون إعلانات»: إعلان صغير أسفل شاشة البداية واختيار الفقرات، وإعلان بملء الشاشة بين الأسئلة كل عدة أسئلة. لا تظهر الإعلانات أبداً أثناء المؤقت أو داخل السؤال.</p></details>
+  <details><summary>كيف أغيّر إعدادات الإعلانات المخصصة؟</summary>
+    <p>من زر «خيارات الإعلانات والخصوصية» في شاشة البداية، أو من إعدادات الخصوصية في جهازك.</p></details>
+  <details><summary>سياسة الخصوصية</summary>
+    <p>اقرأ <a href="privacy.html" target="_blank" rel="noopener">سياسة الخصوصية الكاملة</a>.</p></details>
+
+  <section class="en" dir="ltr" lang="en">
+    <h2>Lamma support (English)</h2>
+    <p>Lamma is a team trivia game for one shared screen. Contact: <b>lammagame.app@gmail.com</b> · Instagram &amp; TikTok: @lammagame.app.</p>
+    <p><b>No Ads:</b> a one-time purchase that removes ads forever. No subscription, no renewals, nothing to cancel.</p>
+    <p><b>Restore purchases:</b> open “★ Remove ads” and tap “Restore purchases”. <b>Refunds</b> are handled by Apple (reportaproblem.apple.com) or Google Play.</p>
+    <p><a href="privacy.html" target="_blank" rel="noopener">Privacy policy</a></p>
+  </section>
+</main>
+
+</html>

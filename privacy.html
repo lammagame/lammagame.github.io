@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>خصوصية لمّة</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@500;700;900&display=swap">
+<style>
+/* Layout: one readable legal column; a summary table up top, numbered sections, full English version below */
+:root{--bg:#FFFBF7;--fg:#120F0D;--muted:#5E554D;--line:#DDD3C9;--soft:#F4EEE8;--accent:#C24A00;--warn:#C8141E}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E0C0B;--fg:#FFFFFF;--muted:#CDC4BB;--line:#3A332E;--soft:#1A1715;--accent:#FF7A2E;--warn:#FF5A61;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0E0C0B;--fg:#FFFFFF;--muted:#CDC4BB;--line:#3A332E;--soft:#1A1715;--accent:#FF7A2E;--warn:#FF5A61;color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:"Cairo","Segoe UI",Tahoma,sans-serif;font-size:17px;line-height:1.85;margin:0;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:72ch;margin:0 auto;padding-block:40px 72px}
+h1{font-weight:900;font-size:clamp(28px,6vw,40px);line-height:1.25;margin:0 0 6px;text-wrap:balance}
+h1 span{color:var(--accent)}
+h2{font-weight:900;font-size:21px;line-height:1.4;margin:36px 0 8px;scroll-margin-top:16px}
+h3{font-weight:700;font-size:17px;margin:18px 0 4px}
+p,li{margin:0 0 10px}
+ul{padding-inline-start:22px;margin:0 0 12px}
+.meta{color:var(--muted);font-size:15px;margin-bottom:20px}
+a{color:var(--accent)}
+.box{background:var(--soft);border-radius:14px;padding:16px 18px;margin:18px 0}
+.box p:last-child{margin:0}
+.todo{color:var(--warn);font-weight:700}
+.tbl{overflow-x:auto;margin:12px 0 4px}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:15px;line-height:1.6}
+th,td{border-bottom:1px solid var(--line);padding:10px 8px;text-align:start;vertical-align:top}
+th{font-weight:900;color:var(--muted);font-size:13px;letter-spacing:.02em}
+nav ol{columns:2;column-gap:32px;padding-inline-start:22px;font-size:15px}
+@media (max-width:560px){nav ol{columns:1}}
+hr{border:none;border-top:1px solid var(--line);margin:56px 0 32px}
+.en{direction:ltr;text-align:left}
+</style>
+
+<main dir="rtl" lang="ar">
+  <h1>سياسة الخصوصية لتطبيق <span>لمّة</span></h1>
+  <p class="meta">تاريخ السريان وآخر تحديث: 12 نوفمبر 2026 · <a href="#en">English version</a></p>
+
+  <div class="box">
+    <p><b>باختصار:</b> لمّة لا يطلب حساباً ولا اسماً ولا بريداً، ولا يصل لجهات اتصالك أو موقعك الدقيق، ولا لصورك إلا الصورة التي تختارها بنفسك لسؤال. كل بيانات اللعب تبقى على جهازك. النسخة المجانية تعرض إعلانات من Google AdMob، وهي تجمع بيانات تقنية محدودة لعرض الإعلانات. ومن يشتري «بدون إعلانات» لا تُشغَّل عنده خدمة الإعلانات أصلاً. ونجمع إحصائيات استخدام مجهولة (أي الفقرات تُلعب أكثر) عبر Firebase. الدفع يتم عن طريق آبل أو جوجل فقط، ولا نرى بيانات بطاقتك.</p>
+  </div>
+
+  <nav aria-label="محتويات الصفحة"><ol>
+    <li><a href="#who">من نحن وكيف تتواصل معنا</a></li>
+    <li><a href="#summary">ملخص البيانات</a></li>
+    <li><a href="#not">بيانات لا نجمعها أبداً</a></li>
+    <li><a href="#device">بيانات تبقى على جهازك</a></li>
+    <li><a href="#ads">الإعلانات (Google AdMob)</a></li>
+    <li><a href="#subs">الشراء وإحصائيات الاستخدام</a></li>
+    <li><a href="#basis">الأساس القانوني للمعالجة</a></li>
+    <li><a href="#share">مع من نشارك البيانات</a></li>
+    <li><a href="#retention">مدة الاحتفاظ</a></li>
+    <li><a href="#rights">حقوقك وكيف تحذف بياناتك</a></li>
+    <li><a href="#security">حماية البيانات</a></li>
+    <li><a href="#transfer">نقل البيانات خارج بلدك</a></li>
+    <li><a href="#kids">الأطفال</a></li>
+    <li><a href="#changes">تغييرات هذه السياسة</a></li>
+  </ol></nav>
+
+  <h2 id="who">1. من نحن وكيف تتواصل معنا</h2>
+  <p>تطبيق «لمّة» يطوّره وينشره <span class="todo">[اسم المطوّر أو الشركة كما يظهر في المتجر]</span>، ونحن المسؤولون عن بياناتك في هذا التطبيق.</p>
+  <p>لأي سؤال أو طلب يخص الخصوصية: <b dir="ltr">lammagame.app@gmail.com</b>. نرد خلال 30 يوماً كحد أقصى.</p>
+
+  <h2 id="summary">2. ملخص البيانات</h2>
+  <div class="tbl"><table>
+    <thead><tr><th>البيانات</th><th>من يجمعها</th><th>لماذا</th><th>هل تقدر ترفض؟</th></tr></thead>
+    <tbody>
+      <tr><td>أسماء الفرق، النقاط، تقدّم اللعبة، الإعدادات</td><td>لا أحد، تبقى على جهازك</td><td>تشغيل اللعبة وحفظ تقدّمك</td><td>تُحذف بحذف التطبيق</td></tr>
+      <tr><td>معرّف الإعلانات (IDFA في آيفون، AAID في أندرويد)</td><td>Google AdMob</td><td>عرض الإعلانات وقياسها ومنع الاحتيال</td><td>نعم، من إذن التتبع أو إعدادات الجهاز</td></tr>
+      <tr><td>عنوان IP، والموقع التقريبي المستنتج منه (المدينة أو البلد)</td><td>Google AdMob</td><td>عرض إعلانات مناسبة لبلدك، ومنع الاحتيال</td><td>لا يمكن إيقافه داخل النسخة المجانية، ويتوقف بشراء «بدون إعلانات»</td></tr>
+      <tr><td>التفاعل مع الإعلانات (مشاهدة، ضغط)، وبيانات أداء تقنية</td><td>Google AdMob</td><td>قياس الإعلانات وتحسين أداء الخدمة</td><td>يتوقف بشراء «بدون إعلانات»</td></tr>
+      <tr><td>سجل الشراء، ومعرّف مستخدم مجهول، ونوع الجهاز ونسخة النظام</td><td>RevenueCat، ومتجر آبل أو جوجل</td><td>التحقق من شرائك واستعادته</td><td>تُجمع فقط إذا اشتريت</td></tr>
+      <tr><td>الفقرات التي تُلعب، وعدد الألعاب، ونوع الجهاز ونسخة النظام والتطبيق، والبلد التقريبي، ومعرّف تثبيت مجهول</td><td>Google Firebase Analytics</td><td>معرفة الفقرات الأكثر لعباً لتحسين الأسئلة وإصلاح المشاكل</td><td>مجهولة، ولا تتضمن معرّف الإعلانات أو أسماء فقرات الجمهور</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2 id="not">3. بيانات لا نجمعها أبداً</h2>
+  <ul>
+    <li>الاسم الحقيقي، البريد، رقم الهاتف، أو أي حساب.</li>
+    <li>جهات الاتصال أو ملفاتك. الصور والكاميرا والميكروفون لا يستخدمها التطبيق إلا إذا اخترت بنفسك إضافة صورة أو فيديو لسؤال في «فقرات الجمهور»، وما تختاره يبقى على جهازك ولا يُرفع لأي مكان.</li>
+    <li>الموقع الدقيق (GPS).</li>
+    <li>بيانات البطاقة البنكية. الدفع يتم بالكامل داخل App Store أو Google Play.</li>
+    <li>محتوى الإجابات أو أي تسجيل لما يقوله اللاعبون.</li>
+  </ul>
+  <p>ولا نملك خوادم خاصة بنا تستقبل أي بيانات من التطبيق.</p>
+
+  <h2 id="device">4. بيانات تبقى على جهازك</h2>
+  <p>أسماء الفرق التي تكتبها، والنقاط، والفقرات المختارة، و<b>«فقرات الجمهور» التي تكتبونها بأسئلتها وأجوبتها وصورها وفيديوهاتها</b>، وإعدادات المؤقت، وحالة شراء «بدون إعلانات»، كلها تُحفظ داخل التطبيق على جهازك فقط ولا تُرسل إلى أي جهة ولا يراها غيركم. تُحذف تلقائياً عند حذف التطبيق، وتقدرون تحذفون أي فقرة من زر التعديل.</p>
+
+  <h3>فقرة «ولا كلمة»</h3>
+  <p>في هذه الفقرة يظهر باركود يمسحه أحد اللاعبين بكاميرا هاتفه، فيفتح بحث Google على هاتفه وفيه الكلمة السرية. لا يرسل التطبيق أي بيانات، لكن البحث يتم عن طريق Google ويخضع <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">لسياسة خصوصية Google</a>.</p>
+
+  <h2 id="ads">5. الإعلانات (Google AdMob)</h2>
+  <p>النسخة المجانية تعرض إعلانات عن طريق Google AdMob، التابعة لشركة Google. تظهر الإعلانات في شاشة البداية وشاشة اختيار الفقرات، وبين الأسئلة كل عدة أسئلة، ولا تظهر أثناء المؤقت.</p>
+  <h3>ما تجمعه Google</h3>
+  <ul>
+    <li>عنوان IP، الذي قد يُستنتج منه موقع تقريبي.</li>
+    <li>معرّفات الجهاز: معرّف الإعلانات، ومعرّف مرتبط بالتطبيق (App Set ID في أندرويد).</li>
+    <li>التفاعل مع التطبيق والإعلانات، مثل فتح التطبيق ومشاهدة الإعلان والضغط عليه.</li>
+    <li>بيانات تشخيص وأداء، مثل وقت التشغيل والأعطال.</li>
+  </ul>
+  <p>تُستخدم هذه البيانات لعرض الإعلانات وقياسها ومنع الاحتيال والتحليلات، وتُرسل مشفّرة. تتعامل Google معها حسب <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">سياسة خصوصية Google</a> و<a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">طريقة استخدامها للبيانات من التطبيقات الشريكة</a>.</p>
+  <h3>اختياراتك</h3>
+  <ul>
+    <li><b>آيفون:</b> يسألك التطبيق قبل أي تتبع (App Tracking Transparency). إذا رفضت، لا تحصل Google على معرّف الإعلانات، ويشتغل التطبيق بشكل كامل. تقدر تغيّر اختيارك من الإعدادات ← الخصوصية والأمان ← التتبع.</li>
+    <li><b>أوروبا والمملكة المتحدة وسويسرا:</b> يظهر لك نموذج موافقة قبل الإعلانات المخصصة، وتقدر ترفضها وتبقى الإعلانات غير مخصصة.</li>
+    <li><b>من داخل اللعبة:</b> زر «خيارات الإعلانات والخصوصية» في شاشة البداية يعيد فتح نموذج الموافقة لتغيير اختيارك متى شئت.</li>
+    <li><b>أندرويد:</b> تقدر تحذف معرّف الإعلانات أو تعيد ضبطه من الإعدادات ← الخصوصية ← الإعلانات.</li>
+    <li><b>بدون إعلانات نهائياً:</b> بعد شراء «بدون إعلانات» لا تُشغَّل خدمة الإعلانات في التطبيق.</li>
+  </ul>
+
+  <h2 id="subs">6. الشراء وإحصائيات الاستخدام</h2>
+  <p>«لمّة بدون إعلانات» شراء لمرة واحدة يزيل الإعلانات فقط وللأبد، بدون اشتراك ولا تجديد تلقائي. يتم الدفع بالكامل عن طريق App Store أو Google Play، وهما يعالجان الدفع حسب سياساتهما ولا نرى بيانات بطاقتك.</p>
+  <p>نستخدم خدمة <b>RevenueCat</b> للتحقق من حالة الشراء وتفعيل الميزات واستعادة المشتريات. تحصل RevenueCat على: معرّف مستخدم مجهول ينشئه التطبيق تلقائياً، وسجل المشتريات، ونوع الجهاز ونسخة النظام والتطبيق، والبلد المستنتج من المتجر. المعرّف المجهول غير مرتبط باسمك أو بريدك، ولا يُستخدم للإعلانات أو للتتبع. التفاصيل في <a href="https://www.revenuecat.com/privacy" target="_blank" rel="noopener">سياسة خصوصية RevenueCat</a>.</p>
+  <p><b>الاستعادة والاسترداد:</b> إذا غيّرت جهازك اضغط «★ إزالة الإعلانات» ← «استعادة المشتريات» بنفس حساب آبل أو جوجل. طلبات استرداد المبلغ تتم عبر آبل أو جوجل حسب سياساتهما.</p>
+  <p><b>إحصائيات الاستخدام:</b> نستخدم <b>Google Firebase Analytics</b> لنعرف أي الفقرات تُلعب أكثر وعدد الألعاب، حتى نضيف أسئلة للفقرات المحبوبة. تُرسل أسماء الفقرات الجاهزة فقط، أما «فقرات الجمهور» فتُحسب بدون اسمها أو محتواها. لا نربط هذه الإحصائيات بهويتك ولا بمعرّف الإعلانات. التفاصيل في <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">سياسة خصوصية Google</a>.</p>
+
+  <h2 id="basis">7. الأساس القانوني للمعالجة</h2>
+  <p>لمن يخضع للائحة الأوروبية لحماية البيانات (GDPR) أو القوانين المشابهة:</p>
+  <ul>
+    <li><b>الموافقة:</b> للإعلانات المخصصة والوصول لمعرّف الإعلانات. تقدر تسحب موافقتك بأي وقت.</li>
+    <li><b>تنفيذ العقد:</b> لمعالجة الشراء وتفعيله واستعادته.</li>
+    <li><b>المصلحة المشروعة:</b> لعرض إعلانات غير مخصصة تموّل النسخة المجانية، ولمنع الاحتيال وحماية الخدمة، ولإحصائيات استخدام مجهولة نحسّن بها المحتوى.</li>
+  </ul>
+
+  <h2 id="share">8. مع من نشارك البيانات</h2>
+  <p>لا نبيع بياناتك، ولا نشاركها إلا مع مقدمي الخدمات المذكورين: Google (الإعلانات والإحصائيات)، وRevenueCat (المشتريات)، وآبل أو جوجل (الدفع). كل جهة منهم ملزمة بحماية البيانات بمستوى لا يقل عن المذكور هنا. قد نكشف بيانات إذا ألزمنا القانون بذلك.</p>
+  <p><b>لسكان كاليفورنيا (CCPA/CPRA):</b> لا نبيع البيانات الشخصية مقابل مال. لكن عرض إعلانات مخصصة عبر Google قد يُعتبر «مشاركة» للإعلان السلوكي. تقدر تمنعه بتعطيل التتبع أو حذف معرّف الإعلانات من إعدادات جهازك، أو بشراء «بدون إعلانات».</p>
+
+  <h2 id="retention">9. مدة الاحتفاظ</h2>
+  <ul>
+    <li><b>بيانات اللعب على جهازك:</b> حتى تحذف التطبيق.</li>
+    <li><b>بيانات الإعلانات:</b> تحتفظ بها Google حسب <a href="https://policies.google.com/technologies/retention" target="_blank" rel="noopener">سياسة الاحتفاظ لديها</a>.</li>
+    <li><b>إحصائيات Firebase:</b> بحد أقصى 14 شهراً ثم تُحذف تلقائياً.</li>
+    <li><b>سجل الشراء لدى RevenueCat:</b> ما دام الشراء فعّالاً، ثم المدة التي تتطلبها الالتزامات المحاسبية والقانونية، أو حتى تطلب حذفه.</li>
+  </ul>
+
+  <h2 id="rights">10. حقوقك وكيف تحذف بياناتك</h2>
+  <p>لك الحق في الاطلاع على بياناتك، وتصحيحها، وحذفها، والاعتراض على معالجتها، وسحب موافقتك، ونقلها، وتقديم شكوى لجهة حماية البيانات في بلدك.</p>
+  <ul>
+    <li><b>حذف بيانات اللعب:</b> احذف التطبيق من جهازك.</li>
+    <li><b>بيانات الإعلانات:</b> أعد ضبط معرّف الإعلانات أو احذفه من إعدادات الجهاز، أو غيّر اختيارك من «خيارات الإعلانات والخصوصية» داخل اللعبة.</li>
+    <li><b>سجل الشراء:</b> راسلنا على <b dir="ltr">lammagame.app@gmail.com</b> مع رقم الطلب من إيصال آبل أو جوجل، ونحذف سجلك من RevenueCat خلال 30 يوماً. حذف السجل قد يمنع استعادة الشراء لاحقاً على جهاز جديد.</li>
+  </ul>
+  <p>التطبيق لا ينشئ حسابات، لذلك لا يوجد حساب لحذفه.</p>
+
+  <h2 id="security">11. حماية البيانات</h2>
+  <p>كل البيانات التي تُرسل من التطبيق إلى Google أو RevenueCat مشفّرة أثناء النقل (TLS). لا نخزّن أي بيانات على خوادم خاصة بنا. لا توجد طريقة نقل أو تخزين آمنة بنسبة 100%، لكننا نختار مقدمي خدمات معروفين بمعايير أمان عالية.</p>
+
+  <h2 id="transfer">12. نقل البيانات خارج بلدك</h2>
+  <p>Google وRevenueCat قد تعالجان البيانات في الولايات المتحدة ودول أخرى. نقل البيانات من أوروبا يتم بضمانات قانونية مثل البنود التعاقدية القياسية المعتمدة من المفوضية الأوروبية.</p>
+
+  <h2 id="kids">13. الأطفال</h2>
+  <p>«لمّة» لعبة للجمعات العائلية ومع الأصدقاء، لكنها غير موجّهة للأطفال دون 13 سنة، ولا نجمع عن قصد بيانات شخصية منهم. إذا كنت ولي أمر وتعتقد أن طفلك قدّم لنا بيانات، راسلنا ونحذفها.</p>
+
+  <h2 id="changes">14. تغييرات هذه السياسة</h2>
+  <p>إذا غيّرنا هذه السياسة سنحدّث التاريخ في أعلى الصفحة. وإذا كان التغيير جوهرياً، مثل إضافة نوع جديد من البيانات، سننبّه عليه داخل التطبيق قبل تطبيقه.</p>
+
+  <hr>
+
+  <section class="en" dir="ltr" lang="en" id="en">
+    <h1>Lamma Privacy Policy</h1>
+    <p class="meta">Effective and last updated: November 12, 2026</p>
+    <div class="box"><p><b>In short:</b> Lamma needs no account, name or email, and never accesses your contacts or precise location, or any photo except one you pick yourself for a question. All game data stays on your device. The free version shows ads from Google AdMob, which collects limited technical data to serve ads. After buying “No Ads” the ads service is not started at all. We collect anonymous usage statistics (which categories are played) via Firebase. Payments go through Apple or Google only; we never see your card details.</p></div>
+
+    <h2>1. Who we are</h2>
+    <p>Lamma is developed and published by <span class="todo">[developer or company name as shown in the store]</span>, the data controller for this app. Privacy questions and requests: <b>lammagame.app@gmail.com</b>. We reply within 30 days.</p>
+
+    <h2>2. Data we never collect</h2>
+    <p>Real name, email, phone number or any account; contacts or files (photos, camera and microphone are used only when you choose to add a photo or video to a custom question, and the media stays on your device); precise (GPS) location; payment card details; anything players say or answer. We operate no servers of our own that receive data from the app.</p>
+
+    <h2>3. Data stored only on your device</h2>
+    <p>Team names, scores, chosen categories, custom categories you write (“Your categories”, with their questions, answers, photos and videos), timer settings and your “No Ads” purchase status are stored locally and never sent to anyone or shown to other users. They are deleted when you delete the app.</p>
+
+    <p><b>Charades category:</b> a QR code opens a Google search for the secret word on the acting player’s phone. The app sends no data; the search is handled by Google under its own privacy policy.</p>
+
+    <h2>4. Advertising (Google AdMob)</h2>
+    <p>The free version shows ads via Google AdMob. Google automatically collects: IP address (which may indicate approximate location); device identifiers (advertising ID, Android App Set ID); app and ad interactions (app launches, ad views and taps); and diagnostic and performance data. It is used for ad delivery, measurement, analytics and fraud prevention, and is encrypted in transit. See the <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a> and <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">how Google uses data from partner apps</a>.</p>
+    <p><b>Your choices:</b> on iOS you are asked before any tracking (ATT) and the app works fully if you decline. In the EEA, UK and Switzerland a consent form appears before personalized ads. The in-game “Ad and privacy choices” button on the start screen reopens that form at any time. On Android you can reset or delete your advertising ID in device settings. Subscribers get no ads, and the ads SDK is not started.</p>
+
+    <h2>5. Purchases and usage statistics</h2>
+    <p>“Lamma No Ads” is a one-time purchase that removes ads forever, with no subscription or auto-renewal. It is billed entirely by the App Store or Google Play; we never receive card details. We use <b>RevenueCat</b> to verify, unlock and restore the purchase. RevenueCat receives an anonymous app-generated user ID, purchase history, device model, OS and app version, and store country. This ID is not linked to your identity and is not used for advertising or tracking. See the <a href="https://www.revenuecat.com/privacy" target="_blank" rel="noopener">RevenueCat Privacy Policy</a>.</p>
+    <p><b>Restore and refunds:</b> on a new device tap “★ Remove ads” → “Restore purchases” with the same Apple or Google account. Refunds are handled by Apple or Google under their policies.</p>
+    <p><b>Usage statistics:</b> we use <b>Google Firebase Analytics</b> to learn which categories are played most and how many games are played, so we can add questions where players want them. Only built-in category names are sent; player-made categories are counted without their name or content. These statistics are not linked to your identity or advertising ID.</p>
+
+    <h2>6. Legal bases (GDPR)</h2>
+    <p>Consent for personalized ads and access to the advertising ID (withdrawable at any time); performance of a contract for purchases; legitimate interests for non-personalized ads that fund the free version, fraud prevention, security and anonymous usage statistics.</p>
+
+    <h2>7. Sharing</h2>
+    <p>We do not sell personal data. We share data only with the service providers above: Google (ads and analytics), RevenueCat (purchases) and Apple or Google (payments), each bound to protect it at least as described here, or where required by law. <b>California residents:</b> personalized advertising via Google may be considered “sharing” for cross-context behavioral advertising; you can opt out by disabling tracking or deleting your advertising ID, or by buying “No Ads”.</p>
+
+    <h2>8. Retention</h2>
+    <p>On-device data: until you delete the app. Advertising data: per <a href="https://policies.google.com/technologies/retention" target="_blank" rel="noopener">Google’s retention policy</a>. Firebase statistics: up to 14 months, then deleted automatically. Purchase records at RevenueCat: while the purchase is active and as required for accounting and legal obligations, or until you ask us to delete them.</p>
+
+    <h2>9. Your rights and data deletion</h2>
+    <p>You may access, correct, delete, object to processing, withdraw consent, port your data, and complain to your data protection authority. Delete game data by deleting the app. Manage ad data in device settings or via the in-game privacy choices. To delete your purchase record, email <b>lammagame.app@gmail.com</b> with the order ID from your Apple or Google receipt; we delete it from RevenueCat within 30 days. Deleting the record may prevent restoring the purchase on a new device. The app creates no accounts, so there is no account to delete.</p>
+
+    <h2>10. Security</h2>
+    <p>All data sent from the app to Google or RevenueCat is encrypted in transit (TLS). We store no data on servers of our own. No method of transmission or storage is 100% secure, but we use reputable providers with strong security standards.</p>
+
+    <h2>11. International transfers</h2>
+    <p>Google and RevenueCat may process data in the United States and other countries. Transfers from the EEA rely on safeguards such as the European Commission’s Standard Contractual Clauses.</p>
+
+    <h2>12. Children</h2>
+    <p>Lamma is a party game for families and friends, but it is not directed to children under 13, and we do not knowingly collect their personal data. If you are a parent and believe your child provided data, contact us and we will delete it.</p>
+
+    <h2>13. Changes</h2>
+    <p>We will update the date above when this policy changes, and notify you in the app before any material change, such as a new type of data, takes effect.</p>
+  </section>
+</main>
+
+</html>
