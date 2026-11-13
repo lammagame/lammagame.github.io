@@ -477,7 +477,7 @@ const mdbReady=MDB.open().then(ok=>ok?MDB.loadAll():null).then(()=>{if(["questio
 /* نحذف الصور التي لم تعد مستخدمة في أي فقرة ولا في المسودة */
 async function gcMedia(){
   if(!MDB.db)return;const used=new Set();
-  CUSTOM.forEach(c=>c.q.forEach(x=>{if(x[2]&&x[2].mid)used.add(x[2].mid)}));
+  CUSTOM.concat(Object.values(PUB)).forEach(c=>c.q.forEach(x=>{if(x[2]&&x[2].mid)used.add(x[2].mid)}));
   if(S.draft)S.draft.items.forEach(it=>{if(it.m)used.add(it.m.mid)});
   (await MDB.keys()).forEach(k=>{if(!used.has(k))MDB.del(k)});
 }
@@ -497,7 +497,12 @@ const lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 let PUB=ls("lamma-pub",{}),BLOCKED=ls("lamma-blocked",[]),HIDE=ls("lamma-hide",[]);
 let PUBLIST=null,PUBERR="",PUBSORT="new",PUBLOADING=false;
 function toCat(d){return {id:"p_"+d.id,pid:d.id,name:d.name,author:d.author||"",uid:d.uid,plays:d.plays|0,reports:d.reports|0,custom:1,pub:1,
-  q:(d.q||[]).map(x=>[x.q,x.a,x.m?(x.m.t==="vid"?{video:x.m.u}:{img:x.m.u}):null,x.l|0])}}
+  q:(d.q||[]).map(x=>[x.q,x.a,x.m&&x.m.r?{mid:"r_"+x.m.r,type:"image",r:x.m.r}:x.m&&x.m.t==="vid"&&x.m.u?{video:x.m.u}:null,x.l|0])}}
+/* صور الفقرات المنشورة: تنزل مرة وحدة وتنحفظ على الجهاز (IndexedDB) حتى تشتغل بدون نت */
+async function ensurePubMedia(cats){const C=CLOUD();if(!C||!MDB.db)return;let got=0;
+  for(const c of cats)for(const x of c.q){const m=x[2];if(!m||!m.r||MDB.urls[m.mid])continue;
+    try{const data=await C.media(m.r);if(data){await MDB.put(m.mid,await (await fetch(data)).blob());got++}}catch(e){}}
+  if(got&&(S.screen==="question"||S.screen==="board"))render()}
 async function loadPub(force){const C=CLOUD();if(!C){PUBERR="off";return}
   if(PUBLOADING||(PUBLIST&&!force))return;PUBLOADING=true;PUBERR="";
   try{const r=await C.list(PUBSORT);if(r===null)PUBERR="net";else PUBLIST=r.map(toCat)}catch(e){PUBERR="net"}
@@ -773,7 +778,7 @@ function Cats(){
   document.getElementById("back").onclick=()=>{S.screen="start";render()};
   document.getElementById("go").onclick=()=>{S.used={};S.scores=[0,0];S.turn=0;S.life=freshLife();S.swapUsed=[];sinceAd=0;buildPicks();trackGame();
     /* الفقرات العامة المختارة تنحفظ على الجهاز حتى تكمل اللعبة بدون نت، وينحسب لعبها */
-    const keep={};S.cats.filter(id=>id.startsWith("p_")).forEach(id=>{const c=findCat(id);if(c){keep[id]=c;CLOUD()&&CLOUD().played(c.pid)}});PUB=keep;lsSet("lamma-pub",PUB);
+    const keep={};S.cats.filter(id=>id.startsWith("p_")).forEach(id=>{const c=findCat(id);if(c){keep[id]=c;CLOUD()&&CLOUD().played(c.pid)}});PUB=keep;lsSet("lamma-pub",PUB);ensurePubMedia(Object.values(PUB));
     S.screen="board";render()};
 }
 
@@ -797,7 +802,7 @@ function showPublish(c){
     d.querySelector("#repub").onclick=async()=>{try{await C.remove(c.pubId)}catch(e){}delete c.pubId;saveCustom();close();showPublish(c)};
     return}
   const {d,close,msg}=sheet(`${head}
-    <p class="muted small">«${esc(c.name)}» راح تطلع لكل اللاعبين بالتطبيق والموقع، ويگدرون يلعبوها.</p>
+    <p class="muted small">«${esc(c.name)}» راح تطلع لكل اللاعبين بالتطبيق والموقع، ويگدرون يلعبوها. الكتابة والصور والفيديوهات تنتشر (الفيديو لحد 15 ميغا، يعني تقريباً 30 ثانية).</p>
     <div class="field"><label for="pauthor">اسمكم اللي يطلع ويا الفقرة</label><input id="pauthor" maxlength="24" value="${esc(ls("lamma-author",""))}" placeholder="مثلاً: شلة الكرادة"></div>
     <label class="terms"><input type="checkbox" id="pterms"> <span>أتعهد إن الفقرة ما بيها كلام مسيء أو بذيء أو صور وفيديوهات غير لائقة أو تخص أشخاص بدون إذنهم. وأفهم إن أي فقرة مخالفة تنحذف، والجهاز اللي نشرها ينحظر.</span></label>
     <div class="pbar" hidden><i></i></div><p class="pmsg" role="status"></p>
@@ -814,7 +819,9 @@ function showPublish(c){
         return {q:x[0],a:x[1],l:x[3]|0,blob}}));
       bar.hidden=false;
       const id=await C.publish({name:c.name,author,items},p=>{bar.firstChild.style.width=Math.round(p*100)+"%";msg("جاري رفع الصور والفيديوهات… "+Math.round(p*100)+"%")});
-      c.pubId=id;saveCustom();PUBLIST=null;close();S.catTab="crowd";render();
+      const r=await Promise.resolve(id);c.pubId=r.id||r;saveCustom();PUBLIST=null;
+      if(r.skipped){bar.hidden=true;msg(`انتشرت ✓ بس ${r.skipped} فيديو ما انرفع لأنه أكبر من 15 ميغا، وبقى عندكم بس.`);go.textContent="تمام";go.disabled=false;go.onclick=()=>{close();S.catTab="crowd";render()};return}
+      close();S.catTab="crowd";render();
     }catch(e){go.disabled=false;bar.hidden=true;
       msg(e.message==="bad_words"?"بالفقرة كلمات غير مناسبة. عدّلوها وجرّبوا مرة ثانية.":e.message==="offline"?"ما اكو إنترنت. جرّبوا بعدين.":/permission/i.test(e.code||e.message)?"ما گدرنا ننشر من هذا الجهاز.":"صار خطأ بالنشر. تأكدوا من الإنترنت وجرّبوا مرة ثانية.")}
   };
