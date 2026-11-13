@@ -731,7 +731,7 @@ function Start(){
   document.getElementById("lpriv").onclick=e=>{e.preventDefault();openExt(LINKS.privacy)};
   document.getElementById("lcontact").onclick=e=>{e.preventDefault();showContact()};
   const la=document.getElementById("lads");if(la)la.onclick=async e=>{e.preventDefault();await window.LammaNative.showPrivacyOptions()};
-  const ls=document.getElementById("lsub");if(ls)ls.onclick=e=>{e.preventDefault();showPremium()};
+  const lsb=document.getElementById("lsub");if(lsb)lsb.onclick=e=>{e.preventDefault();showPremium()};
   app.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{S[b.dataset.k]=+b.dataset.v;S.teams=[getVal("ta"),getVal("tb")];render()});
   document.getElementById("f").onsubmit=e=>{e.preventDefault();autoFull();if(IPHONE&&!STANDALONE&&!ls("lamma-hinted",0)){lsSet("lamma-hinted",1);setTimeout(showHomeHint,300)}S.teams=[getVal("ta")||"الفريق الأول",getVal("tb")||"الفريق الثاني"];S.screen="cats";render()};
 }
@@ -822,6 +822,7 @@ function showPublish(c){
   const go=d.querySelector("#pgo"),bar=d.querySelector(".pbar");
   go.onclick=async()=>{
     const author=d.querySelector("#pauthor").value.trim();
+    if(c.q.length<6){msg("لازم تكون بالفقرة 6 أسئلة على الأقل حتى تنتشر.");return}
     if(!author){msg("اكتبوا اسمكم أولاً.");return}
     if(!d.querySelector("#pterms").checked){msg("لازم توافقون على التعهد حتى تنشرون.");return}
     lsSet("lamma-author",author);go.disabled=true;msg("جاري التجهيز…");
