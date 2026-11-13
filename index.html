@@ -18,6 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;900&family=Lalezar&display=swap">
 <style>
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 /* صفحة لمّة الرسمية: داكنة، برتقالي وأحمر، نفس هوية اللعبة */
 :root{--bg:#0E0C0B;--surface:#1A1715;--raised:#2E2824;--line:#3A332E;--ink:#FFFFFF;--muted:#CDC4BB;--orange:#FF6A13;--orange-text:#FF7A2E;--red:#E5232D;--on-orange:#120F0D;color-scheme:dark}
 *{box-sizing:border-box}
@@ -29,7 +30,7 @@ h1,h2,h3,p{margin:0}
 h2{font-weight:900;font-size:clamp(26px,4vw,40px);line-height:1.3;text-wrap:balance}
 .logo{font-family:"Lalezar","Cairo",sans-serif;font-weight:400;line-height:1}
 .logo span{color:var(--orange)}
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:10px 28px;border-radius:16px;font-weight:900;font-size:19px;text-decoration:none;border:0}
+.btn{white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:10px 28px;border-radius:16px;font-weight:900;font-size:19px;text-decoration:none;border:0}
 .btn-p{background:var(--orange);color:var(--on-orange)}
 .btn-p:hover{filter:brightness(1.08)}
 .btn-g{background:var(--surface);color:var(--ink);border:2px solid var(--line)}
@@ -48,7 +49,7 @@ h2{font-weight:900;font-size:clamp(26px,4vw,40px);line-height:1.3;text-wrap:bala
 .hero .lines b{color:var(--orange-text)}
 .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
 .hero img{width:100%;height:auto;border-radius:28px;display:block;box-shadow:0 20px 60px rgb(255 106 19 / .18)}
-.soon{display:inline-flex;align-items:center;gap:10px;margin-top:20px;padding:8px 16px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-weight:700;font-size:15px;color:var(--muted)}
+.soon{text-wrap:balance;border-radius:18px!important;line-height:1.5;display:inline-flex;align-items:center;gap:10px;margin-top:20px;padding:8px 16px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-weight:700;font-size:15px;color:var(--muted)}
 .soon i{width:10px;height:10px;border-radius:50%;background:var(--orange);font-style:normal;animation:pulse 1.6s infinite}
 @keyframes pulse{50%{opacity:.3}}
 /* أقسام */
@@ -95,7 +96,9 @@ footer .logo{font-size:30px}
 }
 @media (max-width:520px){
   .steps,.feats,.shots{grid-template-columns:1fr}
-  .cta .btn{flex:1}
+  .cta{flex-direction:column}
+  .cta .btn{width:100%}
+  footer nav a{padding-block:6px}
 }
 @media (prefers-reduced-motion:reduce){.soon i{animation:none}html{scroll-behavior:auto}}
 </style>
@@ -115,7 +118,7 @@ footer .logo{font-size:30px}
       <a class="btn btn-p" href="/play.html">العب الآن مجاناً</a>
       <a class="btn btn-g" href="#how">كيف نلعب؟</a>
     </div>
-    <p class="soon"><i></i>تطبيق لمّة قريباً على App Store و Google Play</p>
+    <p class="soon"><i></i>تطبيق لمّة قريباً على <span dir="ltr">App Store</span> و<span dir="ltr">Google Play</span></p>
   </div>
   <img src="/og-square.jpg" width="630" height="630" alt="عائلة تلعب لمّة أمام التلفزيون">
 </div></div>
