@@ -16,6 +16,7 @@
 <meta property="og:description" content="لمّة: لعبة أسئلة للجمعات. فريقين، 6 فقرات، وأكثر من 2000 سؤال على شاشة وحدة. العبوها مجاناً على التلفزيون أو الهاتف.">
 <meta property="og:image" content="https://lamma-game.com/og.png">
 <meta name="twitter:card" content="summary_large_image">
+<script src="/cloud.js" defer></script>
 <title>لمّة</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Lalezar&display=swap">
 <style>
@@ -320,6 +321,19 @@ body.has-banner .app{padding-bottom:calc(64px + env(safe-area-inset-bottom,0px))
 .mychip .chip span:last-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .mychip{grid-column:span 2}
 @media (max-width:420px){.mychip{grid-column:auto}}
+.pubbtn.on{color:var(--correct);border-color:var(--correct)}
+.pubhead{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:8px}
+.sorts{display:flex;gap:4px;background:var(--surface);border-radius:999px;padding:3px}
+.sorts button{border:0;background:transparent;color:var(--ink-muted);font:inherit;font-weight:700;font-size:13px;padding:4px 12px;border-radius:999px}
+.sorts button[aria-pressed="true"]{background:var(--surface-raised);color:var(--ink)}
+.pubnote{font-size:14px}
+.pubchip .chip{flex-wrap:wrap;row-gap:0}
+.pubchip .chip .by{flex-basis:100%;font-size:12px;color:var(--ink-muted);font-weight:600;padding-inline-start:1.6em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.terms{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--ink-muted);line-height:1.6}
+.terms input{width:20px;height:20px;flex:none;margin-top:2px;accent-color:var(--orange)}
+.reasons{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:6px}
+.reasons .chip{font-size:14px;padding:8px 10px}
+.pbar{height:8px;background:var(--surface-raised);border-radius:99px;overflow:hidden}.pbar i{display:block;height:100%;width:0;background:var(--orange);transition:width .2s}
 .edit{background:var(--surface-raised);color:var(--ink);border:2px solid var(--hairline);border-radius:var(--r-md);padding:0;width:40px;flex:none;font-weight:800;font-size:18px}
 .addchip{border-style:dashed;color:var(--orange-text)}
 .addchip .n{color:var(--orange-text)}
@@ -476,7 +490,20 @@ try{window.claude?.hot?.snapshot?.(()=>S)}catch(e){}
 const app=document.getElementById("app");
 let tick=null, bumpTeam=-1, portraitOk=false;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const findCat=id=>BANK.find(c=>c.id===id)||CUSTOM.find(c=>c.id===id);
+/* ---------- فقرات الجمهور المشتركة (Firebase عبر cloud.js) ---------- */
+const CLOUD=()=>window.LammaCloud&&window.LammaCloud.enabled?window.LammaCloud:null;
+const ls=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))||d}catch(e){return d}};
+const lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+let PUB=ls("lamma-pub",{}),BLOCKED=ls("lamma-blocked",[]),HIDE=ls("lamma-hide",[]);
+let PUBLIST=null,PUBERR="",PUBSORT="new",PUBLOADING=false;
+function toCat(d){return {id:"p_"+d.id,pid:d.id,name:d.name,author:d.author||"",uid:d.uid,plays:d.plays|0,reports:d.reports|0,custom:1,pub:1,
+  q:(d.q||[]).map(x=>[x.q,x.a,x.m?(x.m.t==="vid"?{video:x.m.u}:{img:x.m.u}):null,x.l|0])}}
+async function loadPub(force){const C=CLOUD();if(!C){PUBERR="off";return}
+  if(PUBLOADING||(PUBLIST&&!force))return;PUBLOADING=true;PUBERR="";
+  try{const r=await C.list(PUBSORT);if(r===null)PUBERR="net";else PUBLIST=r.map(toCat)}catch(e){PUBERR="net"}
+  PUBLOADING=false;if(S.screen==="cats"&&S.catTab==="crowd")render()}
+const visiblePub=()=>(PUBLIST||[]).filter(c=>!HIDE.includes(c.pid)&&!BLOCKED.includes(c.uid)&&c.reports<3);
+const findCat=id=>BANK.find(c=>c.id===id)||CUSTOM.find(c=>c.id===id)||PUB[id]||(PUBLIST||[]).find(c=>c.id===id);
 const totalTiles=()=>S.cats.length*6;
 const usedCount=()=>Object.keys(S.used).length;
 const getVal=id=>document.getElementById(id).value.trim();
@@ -702,18 +729,22 @@ function Cats(){
   const n=S.cats.length,tab=S.catTab==="crowd"?"crowd":"game";
   const chip=c=>{const i=S.cats.indexOf(c.id),on=i>-1;
     return `<button class="chip" data-id="${c.id}" aria-pressed="${on}" ${!on&&n>=6?"disabled":""}><span class="n">${on?i+1:""}</span><span>${esc(c.name)}</span></button>`};
-  const mine=c=>`<div class="mychip">${chip(c)}<button class="edit" data-edit="${c.id}" type="button" aria-label="تعديل ${esc(c.name)}" title="تعديل">✎</button></div>`;
+  const mine=c=>`<div class="mychip">${chip(c)}<button class="edit" data-edit="${c.id}" type="button" aria-label="تعديل ${esc(c.name)}" title="تعديل">✎</button>${CLOUD()?`<button class="edit pubbtn ${c.pubId?"on":""}" data-pub="${c.id}" type="button" title="${c.pubId?"منشورة للكل":"انشرها للكل"}" aria-label="${c.pubId?"منشورة للكل":"انشرها للكل"}">${c.pubId?"✓":"⇪"}</button>`:""}</div>`;
+  if(tab==="crowd"&&CLOUD()&&!PUBLIST&&!PUBERR)setTimeout(()=>loadPub(),0);
   app.innerHTML=`${topBar("",`<button class="link" id="back" type="button">رجوع</button>`,true)}
   <div class="cats">
     <div class="cats-head"><h2>اختاروا 6 فقرات</h2><p class="count">اخترتم <b>${n}</b> من 6</p></div>
     <div class="tabs" role="tablist" aria-label="نوع الفقرات">
       <button class="tab" role="tab" data-tab="game" aria-selected="${tab==="game"}" type="button">فقرات اللعبة <small>${BANK.length}</small></button>
-      <button class="tab" role="tab" data-tab="crowd" aria-selected="${tab==="crowd"}" type="button">فقرات الجمهور <small>${CUSTOM.length}</small></button>
+      <button class="tab" role="tab" data-tab="crowd" aria-selected="${tab==="crowd"}" type="button">فقرات الجمهور <small>${CUSTOM.length+(PUBLIST?visiblePub().length:0)}</small></button>
     </div>
     <div class="chips-wrap" role="tabpanel">
       ${tab==="crowd"
-        ?`<p class="sec mine-sec">فقرات تكتبونها بأسئلتكم أنتم <small>تتحفظ على جهازكم</small></p>
-      <div class="chips">${CUSTOM.map(mine).join("")}<button class="chip addchip" id="newcat" type="button"><span class="n">+</span><span>فقرة جديدة</span></button></div>`
+        ?`<p class="sec mine-sec">فقراتي <small>تنحفظ على جهازكم، وتگدرون تنشرونها للكل</small></p>
+      <div class="chips">${CUSTOM.map(mine).join("")}<button class="chip addchip" id="newcat" type="button"><span class="n">+</span><span>فقرة جديدة</span></button></div>
+      <div class="pubhead"><p class="sec">من الجمهور <small>فقرات نشرها لاعبين مثلكم</small></p>
+        ${CLOUD()?`<div class="sorts" role="group" aria-label="الترتيب"><button type="button" data-sort="new" aria-pressed="${PUBSORT==="new"}">الأحدث</button><button type="button" data-sort="top" aria-pressed="${PUBSORT==="top"}">الأكثر لعباً</button></div>`:""}</div>
+      ${pubHTML(chip)}`
         :`<div class="chips">${BANK.filter(c=>!ARAB(c)).map(chip).join("")}</div>
       <p class="sec">الدول العربية <small>${BANK.filter(ARAB).length} دولة</small></p>
       <div class="chips">${BANK.filter(ARAB).map(chip).join("")}</div>`}
@@ -730,14 +761,84 @@ function Cats(){
   wrap.scrollTop=S.catScroll||0;compact();
   wrap.addEventListener("scroll",()=>{S.catScroll=wrap.scrollTop;compact()},{passive:true});
   app.querySelectorAll(".chip[data-id]").forEach(b=>b.onclick=()=>{const id=b.dataset.id;
-    const i=S.cats.indexOf(id);i>-1?S.cats.splice(i,1):S.cats.length<6&&S.cats.push(id);render()});
+    const i=S.cats.indexOf(id);i>-1?S.cats.splice(i,1):S.cats.length<6&&S.cats.push(id);
+    if(id.startsWith("p_")){const c=findCat(id);if(c){PUB[id]=c;lsSet("lamma-pub",PUB)}}render()});
   app.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>{const c=CUSTOM.find(x=>x.id===b.dataset.edit);if(c)openEditor(c)});
   const nc=document.getElementById("newcat");if(nc)nc.onclick=()=>openEditor(null);
+  app.querySelectorAll("[data-pub]").forEach(b=>b.onclick=()=>{const c=CUSTOM.find(x=>x.id===b.dataset.pub);if(c)showPublish(c)});
+  app.querySelectorAll("[data-rep]").forEach(b=>b.onclick=()=>{const c=(PUBLIST||[]).find(x=>x.pid===b.dataset.rep);if(c)showReport(c)});
+  app.querySelectorAll("[data-sort]").forEach(b=>b.onclick=()=>{if(PUBSORT===b.dataset.sort)return;PUBSORT=b.dataset.sort;PUBLIST=null;render()});
+  const rt=document.getElementById("pubretry");if(rt)rt.onclick=()=>{PUBERR="";PUBLIST=null;render()};
   app.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{S.catTab=b.dataset.tab;S.catScroll=0;render()});
   document.getElementById("back").onclick=()=>{S.screen="start";render()};
-  document.getElementById("go").onclick=()=>{S.used={};S.scores=[0,0];S.turn=0;S.life=freshLife();S.swapUsed=[];sinceAd=0;buildPicks();trackGame();S.screen="board";render()};
+  document.getElementById("go").onclick=()=>{S.used={};S.scores=[0,0];S.turn=0;S.life=freshLife();S.swapUsed=[];sinceAd=0;buildPicks();trackGame();
+    /* الفقرات العامة المختارة تنحفظ على الجهاز حتى تكمل اللعبة بدون نت، وينحسب لعبها */
+    const keep={};S.cats.filter(id=>id.startsWith("p_")).forEach(id=>{const c=findCat(id);if(c){keep[id]=c;CLOUD()&&CLOUD().played(c.pid)}});PUB=keep;lsSet("lamma-pub",PUB);
+    S.screen="board";render()};
 }
 
+function pubHTML(chip){
+  if(!CLOUD())return `<p class="muted pubnote">قريباً: هنا تطلع فقرات نشرها لاعبين ثانيين، وتگدرون تنشرون فقراتكم للكل.</p>`;
+  if(PUBERR)return `<p class="muted pubnote">ما گدرنا نجيب فقرات الجمهور. تأكدوا من الإنترنت. <button class="link" id="pubretry" type="button">جرّبوا مرة ثانية</button></p>`;
+  if(!PUBLIST)return `<p class="muted pubnote">جاري تحميل فقرات الجمهور…</p>`;
+  const v=visiblePub();
+  if(!v.length)return `<p class="muted pubnote">ما اكو فقرات منشورة بعد. سوّوا فقرة واضغطوا ⇪ حتى تكونون أول ناشرين!</p>`;
+  return `<div class="chips">${v.map(c=>`<div class="mychip pubchip">${chip(c).replace('</span></button>',`</span><small class="by">${esc(c.author||"لاعب")} · ${c.plays} لعبة</small></button>`)}<button class="edit" data-rep="${c.pid}" type="button" aria-label="خيارات ${esc(c.name)}" title="إبلاغ أو حظر">⋯</button></div>`).join("")}</div>`;
+}
+function sheet(html){document.querySelector(".pubsheet")?.remove();const d=document.createElement("div");d.className="sheet pubsheet";d.innerHTML=`<div class="card prem">${html}</div>`;document.body.appendChild(d);
+  const close=()=>d.remove();d.onclick=e=>{if(e.target===d)close()};d.querySelectorAll("[data-close]").forEach(b=>b.onclick=close);return {d,close,msg:t=>{const m=d.querySelector(".pmsg");if(m)m.textContent=t}}}
+function showPublish(c){
+  const C=CLOUD();if(!C)return;
+  const head=`<div class="prem-head"><h3>${c.pubId?"منشورة":"انشرها"} <span>للجمهور</span></h3><button class="link" data-close type="button">إغلاق</button></div>`;
+  if(c.pubId){const {d,close,msg}=sheet(`${head}
+      <p class="muted small">«${esc(c.name)}» تطلع لكل اللاعبين. إذا عدّلتوها، اضغطوا «انشر النسخة الجديدة».</p>
+      <div class="row"><button class="btn btn-d" id="unpub" type="button">شيلها من الجمهور</button><button class="btn btn-p" id="repub" type="button">انشر النسخة الجديدة</button></div><p class="pmsg" role="status"></p>`);
+    d.querySelector("#unpub").onclick=async()=>{msg("جاري الحذف…");try{await C.remove(c.pubId);delete c.pubId;saveCustom();PUBLIST=null;close();render()}catch(e){msg("ما انحذفت. تأكدوا من الإنترنت.")}};
+    d.querySelector("#repub").onclick=async()=>{try{await C.remove(c.pubId)}catch(e){}delete c.pubId;saveCustom();close();showPublish(c)};
+    return}
+  const {d,close,msg}=sheet(`${head}
+    <p class="muted small">«${esc(c.name)}» راح تطلع لكل اللاعبين بالتطبيق والموقع، ويگدرون يلعبوها.</p>
+    <div class="field"><label for="pauthor">اسمكم اللي يطلع ويا الفقرة</label><input id="pauthor" maxlength="24" value="${esc(ls("lamma-author",""))}" placeholder="مثلاً: شلة الكرادة"></div>
+    <label class="terms"><input type="checkbox" id="pterms"> <span>أتعهد إن الفقرة ما بيها كلام مسيء أو بذيء أو صور وفيديوهات غير لائقة أو تخص أشخاص بدون إذنهم. وأفهم إن أي فقرة مخالفة تنحذف، والجهاز اللي نشرها ينحظر.</span></label>
+    <div class="pbar" hidden><i></i></div><p class="pmsg" role="status"></p>
+    <button class="btn btn-p btn-wide" id="pgo" type="button">انشر</button>`);
+  const go=d.querySelector("#pgo"),bar=d.querySelector(".pbar");
+  go.onclick=async()=>{
+    const author=d.querySelector("#pauthor").value.trim();
+    if(!author){msg("اكتبوا اسمكم أولاً.");return}
+    if(!d.querySelector("#pterms").checked){msg("لازم توافقون على التعهد حتى تنشرون.");return}
+    lsSet("lamma-author",author);go.disabled=true;msg("جاري التجهيز…");
+    try{
+      const items=await Promise.all(c.q.map(async x=>{const m=x[2];let blob=null;
+        if(m&&m.mid&&MDB.urls[m.mid]){try{blob=await (await fetch(MDB.urls[m.mid])).blob()}catch(e){}}
+        return {q:x[0],a:x[1],l:x[3]|0,blob}}));
+      bar.hidden=false;
+      const id=await C.publish({name:c.name,author,items},p=>{bar.firstChild.style.width=Math.round(p*100)+"%";msg("جاري رفع الصور والفيديوهات… "+Math.round(p*100)+"%")});
+      c.pubId=id;saveCustom();PUBLIST=null;close();S.catTab="crowd";render();
+    }catch(e){go.disabled=false;bar.hidden=true;
+      msg(e.message==="bad_words"?"بالفقرة كلمات غير مناسبة. عدّلوها وجرّبوا مرة ثانية.":e.message==="offline"?"ما اكو إنترنت. جرّبوا بعدين.":/permission/i.test(e.code||e.message)?"ما گدرنا ننشر من هذا الجهاز.":"صار خطأ بالنشر. تأكدوا من الإنترنت وجرّبوا مرة ثانية.")}
+  };
+}
+function showReport(c){
+  const C=CLOUD();if(!C)return;
+  const mineC=C.uid&&c.uid===C.uid;
+  const {d,close,msg}=sheet(`<div class="prem-head"><h3>${esc(c.name)}</h3><button class="link" data-close type="button">إغلاق</button></div>
+    <p class="muted small">نشرها: ${esc(c.author||"لاعب")} · ${c.q.length} سؤال · ${c.plays} لعبة</p>
+    ${mineC?`<button class="btn btn-d btn-wide" id="pdel" type="button">احذف فقرتي من الجمهور</button>`:`
+    <p class="sec">إبلاغ عن الفقرة</p>
+    <div class="reasons">${["كلام مسيء أو بذيء","صور أو فيديو غير لائق","يسيء لأشخاص","معلومات غلط","سبام أو إعلان"].map(r=>`<button class="chip" type="button" data-r="${r}">${r}</button>`).join("")}</div>
+    <label class="terms"><input type="checkbox" id="pblock"> <span>احظر هذا الناشر، وما تطلعلي أي فقرة منه</span></label>
+    <button class="btn btn-g btn-wide" id="ponlyblock" type="button">حظر الناشر بدون إبلاغ</button>`}
+    <p class="pmsg" role="status"></p>`);
+  const hide=()=>{HIDE.push(c.pid);lsSet("lamma-hide",HIDE);S.cats=S.cats.filter(x=>x!==c.id)};
+  const block=()=>{if(!BLOCKED.includes(c.uid)){BLOCKED.push(c.uid);lsSet("lamma-blocked",BLOCKED)}S.cats=S.cats.filter(x=>{const k=findCat(x);return !(k&&k.uid===c.uid)})};
+  const del=d.querySelector("#pdel");if(del)del.onclick=async()=>{msg("جاري الحذف…");try{await C.remove(c.pid);const m=CUSTOM.find(x=>x.pubId===c.pid);if(m){delete m.pubId;saveCustom()}PUBLIST=null;close();render()}catch(e){msg("ما انحذفت. تأكدوا من الإنترنت.")}};
+  const ob=d.querySelector("#ponlyblock");if(ob)ob.onclick=()=>{block();close();render()};
+  d.querySelectorAll("[data-r]").forEach(b=>b.onclick=async()=>{msg("جاري الإرسال…");
+    try{await C.report(c,b.dataset.r)}catch(e){}
+    hide();if(d.querySelector("#pblock").checked)block();
+    msg("وصل البلاغ، شكراً. الفقرة اختفت عندكم، وإذا تكررت البلاغات تنشال للكل.");setTimeout(()=>{close();render()},1400)});
+}
 /* ---------- محرر فقرات الجمهور ---------- */
 const PTS=[["200","t200"],["400","t400"],["600","t600"]];
 const newItem=(l=0)=>({q:"",a:"",l,m:null});
@@ -794,7 +895,7 @@ function Editor(){
     const f=inp.files&&inp.files[0];if(!f)return;const i=+inp.dataset.file,msg=document.getElementById("emsg");
     const video=f.type.startsWith("video/");
     if(!video&&!f.type.startsWith("image/")){msg.textContent="اختاروا صورة أو فيديو فقط.";return}
-    if(video&&f.size>60*1024*1024){msg.textContent="الفيديو أكبر من 60 ميغابايت، اختاروا مقطعاً أقصر.";return}
+    if(video&&f.size>40*1024*1024){msg.textContent="الفيديو أكبر من 40 ميغابايت، اختاروا مقطعاً أقصر.";return}
     if(!MDB.db){msg.textContent="ما نقدر نحفظ الملفات على هذا الجهاز.";return}
     msg.textContent="جاري حفظ الملف…";
     const blob=video?f:await shrinkImage(f),mid="m"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
