@@ -518,6 +518,18 @@ let audioCtx=null;
 function beep(f=880,d=.08,v=.08){try{audioCtx=audioCtx||new (window.AudioContext||window.webkitAudioContext)();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.frequency.value=f;g.gain.value=v;o.connect(g);g.connect(audioCtx.destination);o.start();g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+d);o.stop(audioCtx.currentTime+d)}catch(e){}}
 
 /* ---------- ملء الشاشة ---------- */
+/* ملء الشاشة: الآيفون ما يسمح للمواقع، فنعلّم اللاعب يضيف اللعبة للشاشة الرئيسية (تفتح بكامل الشاشة) */
+const STANDALONE=matchMedia("(display-mode: fullscreen), (display-mode: standalone)").matches||navigator.standalone===true;
+const CANFULL=!!(document.fullscreenEnabled||document.webkitFullscreenEnabled);
+const IPHONE=/iPhone|iPod/.test(navigator.userAgent);
+const isFull=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
+function autoFull(){if(!NATIVE&&!STANDALONE&&CANFULL&&!isFull())toggleFull()}
+function showHomeHint(){
+  document.querySelector(".hintsheet")?.remove();const d=document.createElement("div");d.className="sheet hintsheet";
+  d.innerHTML=`<div class="card prem"><div class="prem-head"><h3>العب <span>بكامل الشاشة</span></h3><button class="link" id="hclose" type="button">إغلاق</button></div>
+    <p class="muted small">سفاري بالآيفون ما يخلي المواقع تشيل أشرطته. بس إذا ضفت لمّة للشاشة الرئيسية، تفتح بكامل الشاشة مثل التطبيق:</p>
+    <ol class="rules"><li>اضغط زر <b>المشاركة</b> <span aria-hidden="true">⬆️</span> بسفاري (تحت أو فوگ).</li><li>انزل واختار <b>«إضافة إلى الشاشة الرئيسية»</b>.</li><li>اضغط <b>إضافة</b>، وافتح لمّة من أيقونتها.</li></ol></div>`;
+  document.body.appendChild(d);const c=()=>d.remove();d.onclick=e=>{if(e.target===d)c()};d.querySelector("#hclose").onclick=c}
 function toggleFull(){try{const d=document;if(d.fullscreenElement||d.webkitFullscreenElement){(d.exitFullscreen||d.webkitExitFullscreen).call(d)}else{const el=d.documentElement;const r=(el.requestFullscreen||el.webkitRequestFullscreen);r&&Promise.resolve(r.call(el)).catch(()=>{})}}catch(e){}}
 
 /* ---------- العرض ---------- */
@@ -563,13 +575,13 @@ function rotatePrompt(){
   <button class="btn btn-g" id="pok">كمّل بالطول</button></div>`;
   document.body.appendChild(d);d.querySelector("#pok").onclick=()=>{portraitOk=true;d.remove()};
 }
-addEventListener("resize",()=>{scrollTo(0,0);clearTimeout(window.__rz);window.__rz=setTimeout(()=>{rotatePrompt();fitAll()},150)});
+addEventListener("resize",()=>{if(matchMedia("(orientation:landscape)").matches)scrollTo(0,0);clearTimeout(window.__rz);window.__rz=setTimeout(()=>{rotatePrompt();fitAll()},150)});
 
 function topBar(center="",extra="",prem=false){
   const pb=prem&&NATIVE?`<button class="link prem-link" id="prem" type="button">${PREMIUM?"★ بدون إعلانات":"★ إزالة الإعلانات"}</button>`:"";
-  return `<div class="bar"><div class="logo">لمّ<span>ة</span></div>${center}<div class="tools">${extra}${pb}${NATIVE?"":`<button class="link" id="fs" type="button">ملء الشاشة</button>`}</div></div>`;
+  return `<div class="bar"><div class="logo">لمّ<span>ة</span></div>${center}<div class="tools">${extra}${pb}${NATIVE||STANDALONE?"":CANFULL?`<button class="link" id="fs" type="button">ملء الشاشة</button>`:IPHONE?`<button class="link" id="fshint" type="button">كامل الشاشة</button>`:""}</div></div>`;
 }
-function wireBar(){const f=document.getElementById("fs");if(f)f.onclick=toggleFull;const p=document.getElementById("prem");if(p)p.onclick=showPremium}
+function wireBar(){const f=document.getElementById("fs");if(f)f.onclick=toggleFull;const fh=document.getElementById("fshint");if(fh)fh.onclick=showHomeHint;const p=document.getElementById("prem");if(p)p.onclick=showPremium}
 function adBanner(){return "";/* البانر الحقيقي يظهر بالتطبيق فقط (AdMob) */ return (PREMIUM||NATIVE)?"":`<div class="adbar" role="note"><span class="adtag">إعلان</span><span>مساحة إعلان بانر. في التطبيق الحقيقي يظهر هنا إعلان من AdMob.</span><button class="adx" type="button" data-prem>إزالة الإعلانات</button></div>`}
 function wireAds(){app.querySelectorAll("[data-prem]").forEach(b=>b.onclick=showPremium)}
 
@@ -721,7 +733,7 @@ function Start(){
   const la=document.getElementById("lads");if(la)la.onclick=async e=>{e.preventDefault();await window.LammaNative.showPrivacyOptions()};
   const ls=document.getElementById("lsub");if(ls)ls.onclick=e=>{e.preventDefault();showPremium()};
   app.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{S[b.dataset.k]=+b.dataset.v;S.teams=[getVal("ta"),getVal("tb")];render()});
-  document.getElementById("f").onsubmit=e=>{e.preventDefault();S.teams=[getVal("ta")||"الفريق الأول",getVal("tb")||"الفريق الثاني"];S.screen="cats";render()};
+  document.getElementById("f").onsubmit=e=>{e.preventDefault();autoFull();if(IPHONE&&!STANDALONE&&!ls("lamma-hinted",0)){lsSet("lamma-hinted",1);setTimeout(showHomeHint,300)}S.teams=[getVal("ta")||"الفريق الأول",getVal("tb")||"الفريق الثاني"];S.screen="cats";render()};
 }
 
 /* ---------- 2. اختيار الفقرات ---------- */
