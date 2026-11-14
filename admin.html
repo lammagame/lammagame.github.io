@@ -20,10 +20,20 @@ article.hid{opacity:.6;border-color:#E5232D}
 article small{color:#CDC4BB}
 .acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 a{color:#FF7A2E}
+#tabs{flex-wrap:wrap}
+.reasons{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.reasons span{background:#2E2824;border-radius:99px;padding:2px 10px;font-size:13px}
+.qimg{max-width:160px;max-height:110px;border-radius:8px;display:block;margin-top:4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+.box{background:#1A1715;border-radius:14px;padding:14px}
+.box h3{margin:0 0 8px;font-size:17px}
+.row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center;padding:3px 0;font-size:14px}
+.bar{grid-column:1/-1;height:6px;background:#2E2824;border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:#FF6A13}
+.kpi{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}.kpi div{background:#1A1715;border-radius:14px;padding:10px 16px}.kpi b{display:block;font-size:26px;color:#FF7A2E}
+.muted{color:#CDC4BB;font-size:13px}
 </style>
 <header class="top"><h1>مشرف لمّ<span>ة</span></h1><div><small id="who"></small> <button id="in" type="button">دخول بجوجل</button><button id="out" type="button" hidden>خروج</button></div></header>
 <main id="main" hidden>
-  <div id="tabs"><button type="button" data-v="reported" aria-pressed="true">عليها بلاغات</button><button type="button" data-v="new" aria-pressed="false">الأحدث</button></div>
+  <div id="tabs"><button type="button" data-v="reported" aria-pressed="true">عليها بلاغات</button><button type="button" data-v="new" aria-pressed="false">الأحدث</button><button type="button" data-v="stats" aria-pressed="false">الإحصائيات</button><button type="button" data-v="hidden" aria-pressed="false">المخفية</button></div>
   <div id="list"></div>
 </main>
 <script src="/admin.js"></script>
