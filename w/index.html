@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>كلمة لمّة</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Lalezar&display=swap">
+<style>
+/* Layout: one centered card on a black stage; the secret word fills the screen of the actor's phone */
+:root{--night:#0E0C0B;--surface:#1A1715;--ink:#FFFFFF;--muted:#CDC4BB;--orange:#FF6A13;--on-orange:#120F0D;color-scheme:dark}
+html,body{height:100%}
+body{margin:0;background:var(--night);color:var(--ink);font-family:"Cairo","Segoe UI",Tahoma,sans-serif;display:flex;align-items:center;justify-content:center;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));text-align:center}
+main{display:grid;gap:20px;justify-items:center;max-width:560px;width:100%;padding-block:24px}
+.logo{font-family:"Lalezar","Cairo",sans-serif;font-size:40px;line-height:1.3}
+.logo span{color:var(--orange)}
+.tag{font-weight:700;color:var(--muted);font-size:16px}
+.card{background:var(--surface);border:3px solid var(--orange);border-radius:24px;padding:28px 20px;width:100%;box-sizing:border-box;display:grid;gap:8px}
+.word{font-weight:900;font-size:clamp(40px,14vw,88px);line-height:1.2;word-break:break-word;transition:filter .2s}
+.word.hide{filter:blur(18px);user-select:none}
+.kind{font-weight:700;color:var(--orange);font-size:18px}
+button{font:inherit;font-weight:900;font-size:18px;background:var(--orange);color:var(--on-orange);border:0;border-radius:14px;padding:12px 24px;min-height:48px;cursor:pointer}
+button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.rules{color:var(--muted);font-weight:700;font-size:15px;line-height:1.7;margin:0}
+</style>
+<main dir="rtl" lang="ar">
+  <div class="logo">لمّ<span>ة</span></div>
+  <p class="tag" id="tag">ولا كلمة: كلمتك السرية</p>
+  <div class="card">
+    <div class="word hide" id="word">…</div>
+  </div>
+  <button id="show" type="button">اضغط لإظهار الكلمة</button>
+  <p class="rules">لا تخلّي أحد يشوف الشاشة. مثّل الكلمة لفريقك بدون كلام ولا أصوات ولا إشارة لحروف.</p>
+</main>
+<script>
+(function(){
+  var el=document.getElementById("word"),btn=document.getElementById("show");
+  function decode(h){try{var b=new Uint8Array(h.match(/../g).map(function(x){return parseInt(x,16)}));return new TextDecoder().decode(b)}catch(e){return ""}}
+  function load(){
+    var h=(location.hash||"").replace(/^#w?/,"");
+    var w=/^[0-9a-f]+$/i.test(h)&&h.length%2===0?decode(h):"";
+    el.textContent=w||"امسح الباركود من شاشة اللعبة";
+    if(!w){el.classList.remove("hide");btn.hidden=true;document.getElementById("tag").textContent="ولا كلمة"}
+    else{el.classList.add("hide");btn.hidden=false;btn.textContent="اضغط لإظهار الكلمة"}
+  }
+  btn.onclick=function(){var h=el.classList.toggle("hide");btn.textContent=h?"اضغط لإظهار الكلمة":"إخفاء الكلمة"};
+  addEventListener("hashchange",load);load();
+})();
+</script>
+
+</html>
