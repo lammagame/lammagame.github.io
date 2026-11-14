@@ -2,48 +2,197 @@
 <html lang="ar" dir="rtl">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>كلمة لمّة</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Lalezar&display=swap">
+<title>لمّة | لعبة أسئلة للجمعات</title>
+<meta name="description" content="لمّة: لعبة أسئلة للجمعات. فريقين، 6 فقرات، وأكثر من 2500 سؤال على شاشة وحدة. العبوها مجاناً على التلفزيون أو الهاتف.">
+<meta name="theme-color" content="#0E0C0B">
+<link rel="canonical" href="https://lamma-game.com/">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta property="og:title" content="لمّة | لعبة أسئلة للجمعات">
+<meta property="og:description" content="لمّة: لعبة أسئلة للجمعات. فريقين، 6 فقرات، وأكثر من 2500 سؤال على شاشة وحدة. العبوها مجاناً على التلفزيون أو الهاتف.">
+<meta property="og:image" content="https://lamma-game.com/og.png">
+<meta property="og:url" content="https://lamma-game.com/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="/fonts/cairo-arabic-900-normal.woff2" as="font" type="font/woff2" crossorigin>
+<style>@font-face{font-family:"Cairo";font-weight:600;font-display:swap;src:url(/fonts/cairo-arabic-600-normal.woff2) format("woff2");unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0898-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}@font-face{font-family:"Cairo";font-weight:600;font-display:swap;src:url(/fonts/cairo-latin-600-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:"Cairo";font-weight:700;font-display:swap;src:url(/fonts/cairo-arabic-700-normal.woff2) format("woff2");unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0898-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}@font-face{font-family:"Cairo";font-weight:700;font-display:swap;src:url(/fonts/cairo-latin-700-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:"Cairo";font-weight:800;font-display:swap;src:url(/fonts/cairo-arabic-800-normal.woff2) format("woff2");unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0898-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}@font-face{font-family:"Cairo";font-weight:800;font-display:swap;src:url(/fonts/cairo-latin-800-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:"Cairo";font-weight:900;font-display:swap;src:url(/fonts/cairo-arabic-900-normal.woff2) format("woff2");unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0898-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}@font-face{font-family:"Cairo";font-weight:900;font-display:swap;src:url(/fonts/cairo-latin-900-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}@font-face{font-family:"Lalezar";font-weight:400;font-display:swap;src:url(/fonts/lalezar-arabic-400-normal.woff2) format("woff2");unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0898-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}@font-face{font-family:"Lalezar";font-weight:400;font-display:swap;src:url(/fonts/lalezar-latin-400-normal.woff2) format("woff2");unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}</style>
 <style>
-/* Layout: one centered card on a black stage; the secret word fills the screen of the actor's phone */
-:root{--night:#0E0C0B;--surface:#1A1715;--ink:#FFFFFF;--muted:#CDC4BB;--orange:#FF6A13;--on-orange:#120F0D;color-scheme:dark}
-html,body{height:100%}
-body{margin:0;background:var(--night);color:var(--ink);font-family:"Cairo","Segoe UI",Tahoma,sans-serif;display:flex;align-items:center;justify-content:center;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));text-align:center}
-main{display:grid;gap:20px;justify-items:center;max-width:560px;width:100%;padding-block:24px}
-.logo{font-family:"Lalezar","Cairo",sans-serif;font-size:40px;line-height:1.3}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+/* صفحة لمّة الرسمية: داكنة، برتقالي وأحمر، نفس هوية اللعبة */
+:root{--bg:#0E0C0B;--surface:#1A1715;--raised:#2E2824;--line:#3A332E;--ink:#FFFFFF;--muted:#CDC4BB;--orange:#FF6A13;--orange-text:#FF7A2E;--red:#E5232D;--on-orange:#120F0D;color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Cairo","Segoe UI",Tahoma,sans-serif;font-size:17px;line-height:1.75}
+a{color:var(--orange-text)}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3,p{margin:0}
+h2{font-weight:900;font-size:clamp(26px,4vw,40px);line-height:1.3;text-wrap:balance}
+.logo{font-family:"Lalezar","Cairo",sans-serif;font-weight:400;line-height:1}
 .logo span{color:var(--orange)}
-.tag{font-weight:700;color:var(--muted);font-size:16px}
-.card{background:var(--surface);border:3px solid var(--orange);border-radius:24px;padding:28px 20px;width:100%;box-sizing:border-box;display:grid;gap:8px}
-.word{font-weight:900;font-size:clamp(40px,14vw,88px);line-height:1.2;word-break:break-word;transition:filter .2s}
-.word.hide{filter:blur(18px);user-select:none}
-.kind{font-weight:700;color:var(--orange);font-size:18px}
-button{font:inherit;font-weight:900;font-size:18px;background:var(--orange);color:var(--on-orange);border:0;border-radius:14px;padding:12px 24px;min-height:48px;cursor:pointer}
-button:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
-.rules{color:var(--muted);font-weight:700;font-size:15px;line-height:1.7;margin:0}
+.btn{white-space:nowrap;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:10px 28px;border-radius:16px;font-weight:900;font-size:19px;text-decoration:none;border:0}
+.btn-p{background:var(--orange);color:var(--on-orange)}
+.btn-p:hover{filter:brightness(1.08)}
+.btn-g{background:var(--surface);color:var(--ink);border:2px solid var(--line)}
+.btn:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+/* شريط علوي */
+.nav{position:sticky;top:0;z-index:5;background:rgb(14 12 11 / .9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:10px}
+.nav .logo{font-size:36px}
+.nav .btn{min-height:44px;padding:6px 20px;font-size:17px}
+/* الواجهة */
+.hero{padding-block:clamp(32px,7vw,80px)}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(24px,5vw,64px);align-items:center}
+.hero h1{font-size:clamp(84px,14vw,170px)}
+.hero .tag{font-size:clamp(20px,2.6vw,28px);font-weight:900;margin-top:8px}
+.hero .lines{color:var(--muted);font-size:clamp(17px,2vw,21px);margin-top:12px}
+.hero .lines b{color:var(--orange-text)}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.hero img{width:100%;height:auto;border-radius:28px;display:block;box-shadow:0 20px 60px rgb(255 106 19 / .18)}
+.soon{text-wrap:balance;border-radius:18px!important;line-height:1.5;display:inline-flex;align-items:center;gap:10px;margin-top:20px;padding:8px 16px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-weight:700;font-size:15px;color:var(--muted)}
+.soon i{width:10px;height:10px;border-radius:50%;background:var(--orange);font-style:normal;animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.3}}
+/* أقسام */
+section{padding-block:clamp(36px,6vw,72px)}
+.sec-head{display:grid;gap:8px;margin-bottom:28px;max-width:62ch}
+.sec-head p{color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat{background:var(--surface);border-radius:20px;padding:18px;text-align:center}
+.stat b{display:block;font-size:clamp(30px,4vw,44px);font-weight:900;color:var(--orange-text);line-height:1.2}
+.stat span{color:var(--muted);font-weight:700;font-size:15px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;counter-reset:s}
+.step{background:var(--surface);border-radius:20px;padding:20px;display:grid;gap:6px;align-content:start}
+.step::before{counter-increment:s;content:counter(s);width:40px;height:40px;border-radius:12px;background:var(--orange);color:var(--on-orange);font-weight:900;display:grid;place-items:center;font-size:20px}
+.step h3{font-size:19px;font-weight:900}
+.step p{color:var(--muted);font-size:15.5px}
+.shots{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.shots figure{margin:0;background:var(--surface);border-radius:20px;overflow:hidden}
+.shots img{width:100%;height:auto;display:block;aspect-ratio:16/9;object-fit:cover}
+.shots figcaption{padding:10px 16px;font-weight:700;color:var(--muted);font-size:15px}
+.feats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.feat{background:var(--surface);border-radius:20px;padding:20px;display:grid;gap:6px;align-content:start;border-top:4px solid var(--orange)}
+.feat:nth-child(3n+2){border-top-color:var(--red)}
+.feat h3{font-size:19px;font-weight:900}
+.feat p{color:var(--muted);font-size:15.5px}
+.cats{display:flex;flex-wrap:wrap;gap:8px}
+.cats span{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-weight:700;font-size:15px}
+.adwrap{margin-block:8px;min-height:0}
+.adwrap:empty{display:none}
+.apps{background:linear-gradient(135deg,var(--surface),var(--raised));border-radius:28px;padding:clamp(24px,5vw,48px);display:grid;gap:14px;text-align:center;justify-items:center}
+.badges{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.badge{display:grid;text-align:start;gap:0;min-width:200px;padding:10px 20px;border-radius:14px;background:var(--bg);border:2px solid var(--line);line-height:1.3}
+.badge small{color:var(--muted);font-size:13px;font-weight:700}
+.badge b{font-size:20px;font-weight:900}
+footer{border-top:1px solid var(--line);padding-block:28px calc(28px + env(safe-area-inset-bottom,0px));color:var(--muted);font-size:15px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;align-items:center}
+footer nav{display:flex;flex-wrap:wrap;gap:8px 18px}
+footer .logo{font-size:30px}
+@media (max-width:860px){
+  .hero .wrap{grid-template-columns:1fr}
+  .hero img{max-width:440px;margin-inline:auto}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:repeat(2,1fr)}
+  .feats{grid-template-columns:1fr 1fr}
+}
+@media (max-width:520px){
+  .steps,.feats,.shots{grid-template-columns:1fr}
+  .cta{flex-direction:column}
+  .cta .btn{width:100%}
+  footer nav a{padding-block:6px}
+}
+@media (prefers-reduced-motion:reduce){.soon i{animation:none}html{scroll-behavior:auto}}
 </style>
-<main dir="rtl" lang="ar">
-  <div class="logo">لمّ<span>ة</span></div>
-  <p class="tag" id="tag">ولا كلمة: كلمتك السرية</p>
-  <div class="card">
-    <div class="word hide" id="word">…</div>
-  </div>
-  <button id="show" type="button">اضغط لإظهار الكلمة</button>
-  <p class="rules">لا تخلّي أحد يشوف الشاشة. مثّل الكلمة لفريقك بدون كلام ولا أصوات ولا إشارة لحروف.</p>
-</main>
-<script>
-(function(){
-  var el=document.getElementById("word"),btn=document.getElementById("show");
-  function decode(h){try{var b=new Uint8Array(h.match(/../g).map(function(x){return parseInt(x,16)}));return new TextDecoder().decode(b)}catch(e){return ""}}
-  function load(){
-    var h=(location.hash||"").replace(/^#w?/,"");
-    var w=/^[0-9a-f]+$/i.test(h)&&h.length%2===0?decode(h):"";
-    el.textContent=w||"امسح الباركود من شاشة اللعبة";
-    if(!w){el.classList.remove("hide");btn.hidden=true;document.getElementById("tag").textContent="ولا كلمة"}
-    else{el.classList.add("hide");btn.hidden=false;btn.textContent="اضغط لإظهار الكلمة"}
-  }
-  btn.onclick=function(){var h=el.classList.toggle("hide");btn.textContent=h?"اضغط لإظهار الكلمة":"إخفاء الكلمة"};
-  addEventListener("hashchange",load);load();
-})();
-</script>
+<body>
+<header class="nav"><div class="wrap">
+  <a href="/" class="logo" style="text-decoration:none;color:var(--ink)" aria-label="لمّة">لمّ<span>ة</span></a>
+  <a class="btn btn-p" href="/play.html">العب الآن</a>
+</div></header>
 
+<main>
+<div class="hero"><div class="wrap">
+  <div>
+    <h1 class="logo">لمّ<span>ة</span></h1>
+    <p class="tag">لعبة أسئلة للجمعات والعائلة والأصدقاء</p>
+    <p class="lines">تقوّي معلوماتكم، تقوّي علاقتكم ببعض، <b>وتخلّيكم تتونّسون.</b><br>فريقين، 6 فقرات، وتحدّي على شاشة وحدة: التلفزيون أو الآيباد أو الهاتف.</p>
+    <div class="cta">
+      <a class="btn btn-p" href="/play.html">العب الآن مجاناً</a>
+      <a class="btn btn-g" href="#how">كيف نلعب؟</a>
+    </div>
+    <p class="soon"><i></i>تطبيق لمّة قريباً على <span dir="ltr">App Store</span> و<span dir="ltr">Google Play</span></p>
+  </div>
+  <img src="/og-square.jpg" width="630" height="630" alt="عائلة تلعب لمّة أمام التلفزيون">
+</div></div>
+
+<section><div class="wrap">
+  <div class="stats">
+    <div class="stat"><b>2500+</b><span>سؤال</span></div>
+    <div class="stat"><b>70</b><span>فقرة</span></div>
+    <div class="stat"><b>22</b><span>دولة عربية</span></div>
+    <div class="stat"><b>194</b><span>علم وخريطة</span></div>
+  </div>
+</div></section>
+
+<section id="how"><div class="wrap">
+  <div class="sec-head"><h2>كيف نلعب؟</h2><p>ما تحتاجون غير شاشة وحدة وجمعة حلوة. واحد يمسك الهاتف ويكون الحَكَم.</p></div>
+  <div class="steps">
+    <div class="step"><h3>انقسموا لفريقين</h3><p>اكتبوا اسم كل فريق، واختاروا وقت الإجابة.</p></div>
+    <div class="step"><h3>اختاروا 6 فقرات</h3><p>من رياضة وأفلام ودول وألغاز، أو سوّوا فقرتكم بأسئلتكم.</p></div>
+    <div class="step"><h3>اختاروا سؤال</h3><p>كل فقرة فيها 200 سهل و400 متوسط و600 صعب. الفريق صاحب الدور يجاوب أول، بعدها الثاني.</p></div>
+    <div class="step"><h3>اجمعوا النقاط</h3><p>تنكشف الإجابة، وكل فريق جاوب صح ياخذ النقاط. الأعلى يفوز.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="sec-head"><h2>شكل اللعبة</h2><p>مصممة للشاشة بالعرض، وواضحة حتى من آخر القعدة.</p></div>
+  <div class="shots">
+    <figure><img src="/shot-board.jpg" width="1200" height="675" loading="lazy" alt="لوحة الفقرات والنقاط"><figcaption>لوحة الفقرات والنقاط</figcaption></figure>
+    <figure><img src="/shot-flag.jpg" width="1200" height="675" loading="lazy" alt="سؤال علم مع المؤقت"><figcaption>أسئلة بالصور والأعلام والخرائط</figcaption></figure>
+    <figure><img src="/shot-charades.jpg" width="1200" height="675" loading="lazy" alt="فقرة ولا كلمة بالباركود"><figcaption>«ولا كلمة»: الممثل يشوف الكلمة بالباركود</figcaption></figure>
+    <figure><img src="/shot-reveal.jpg" width="1200" height="675" loading="lazy" alt="كشف الإجابة ومنو جاوب"><figcaption>كشف الإجابة وتوزيع النقاط</figcaption></figure>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="sec-head"><h2>ليش لمّة؟</h2></div>
+  <div class="feats">
+    <div class="feat"><h3>3 أدوات مساعدة</h3><p>«أول حرف» و«غيّر السؤال» و«جوابين». كل فريق يستعملها مرة وحدة بالذكاء.</p></div>
+    <div class="feat"><h3>فقرات الجمهور</h3><p>اكتبوا فقرتكم بأسئلتكم وصوركم وفيديوهاتكم، عن العائلة أو الشلة.</p></div>
+    <div class="feat"><h3>كل الدول العربية</h3><p>فقرة لكل دولة عربية، و194 علماً وخريطة وعاصمة من كل العالم.</p></div>
+    <div class="feat"><h3>بدون تكرار</h3><p>اللعبة تتذكر الأسئلة اللي طلعت، فكل جمعة تجيكم أسئلة جديدة.</p></div>
+    <div class="feat"><h3>على التلفزيون</h3><p>اعرضوها على التلفزيون (AirPlay أو Smart View) والكل يشوف.</p></div>
+    <div class="feat"><h3>مجانية</h3><p>كل الفقرات مجانية. وبالتطبيق تقدرون تشيلون الإعلانات بدفعة وحدة.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="sec-head"><h2>الفقرات</h2><p>70 فقرة، وكل وحدة فيها أسئلة سهلة ومتوسطة وصعبة.</p></div>
+  <div class="cats"><span>ولا كلمة</span><span>كرة قدم عربية</span><span>كأس العالم</span><span>جغرافيا</span><span>أعلام</span><span>معلومات عامة</span><span>قصص الأنبياء</span><span>من أنا؟</span><span>العراق</span><span>ما هو الحيوان</span><span>حزورات</span><span>مسلسلات مصرية</span><span>أفلام أجنبية</span><span>ماركات</span><span>تاريخ العالم</span><span>الدوري الإنجليزي</span><span>أمثال عراقية</span><span>للعراقيين فقط</span><span>عالم الحيوان</span><span>القرآن الكريم</span><span>المذهب الجعفري</span><span>المذهب السني</span><span>أفلام مصرية</span><span>مسلسلات خليجية</span><span>مسلسلات أجنبية</span><span>دوري أبطال أوروبا</span><span>الكلاسيكو</span><span>ريال مدريد</span><span>برشلونة</span><span>كرة سلة</span><span>تنس</span><span>أنمي</span><span>تاريخ العراق</span><span>شعراء العراق</span><span>أغاني عراقية</span><span>تاريخ المسلمين</span><span>رؤساء الدول</span><span>خرائط دول</span><span>عواصم</span><span>ألغاز</span><span>منتجات نسائية</span><span>السعودية</span><span>الكويت</span><span>الإمارات</span><span>قطر</span><span>البحرين</span><span>عُمان</span><span>اليمن</span><span>الأردن</span><span>سوريا</span><span>لبنان</span><span>فلسطين</span><span>مصر</span><span>السودان</span><span>ليبيا</span><span>تونس</span><span>الجزائر</span><span>المغرب</span><span>موريتانيا</span><span>الصومال</span><span>جيبوتي</span><span>جزر القمر</span><span>الكرة السعودية</span><span>الكرة المصرية</span><span>الكرة العراقية</span><span>الكرة المغربية</span><span>الكرة الجزائرية</span><span>الكرة القطرية</span><span>الكرة الإماراتية</span><span>الكرة التونسية</span></div>
+  <div class="cta"><a class="btn btn-p" href="/play.html">ابدأوا اللعب</a></div>
+</div></section>
+
+<section id="apps"><div class="wrap"><div class="apps">
+  <h2>تطبيق لمّة قريباً</h2>
+  <p style="color:var(--muted)">على الآيفون والآيباد والأندرويد. تابعونا حتى تعرفون أول ما ينزل.</p>
+  <div class="badges">
+    <div class="badge"><small>قريباً على</small><b>App Store</b></div>
+    <div class="badge"><small>قريباً على</small><b>Google Play</b></div>
+  </div>
+  <div class="cta" style="justify-content:center;margin-top:8px">
+    <a class="btn btn-g" href="https://www.instagram.com/lammagame.app/" target="_blank" rel="noopener">انستغرام</a>
+    <a class="btn btn-g" href="https://www.tiktok.com/@lammagame.app" target="_blank" rel="noopener">تيك توك</a>
+  </div>
+</div></div></section>
+</main>
+
+<footer><div class="wrap">
+  <span class="logo">لمّ<span>ة</span></span>
+  <nav>
+    <a href="/play.html">العب</a>
+    <a href="/support.html">الدعم</a>
+    <a href="/privacy.html">سياسة الخصوصية</a>
+    <span dir="ltr">lammagame.app@gmail.com</span>
+  </nav>
+  <span>© 2026 لمّة</span>
+</div></footer>
+</body>
 </html>
