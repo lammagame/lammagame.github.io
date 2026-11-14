@@ -596,10 +596,13 @@ let PUBLIST=null,PUBERR="",PUBSORT="new",PUBLOADING=false;
 function toCat(d){return {id:"p_"+d.id,pid:d.id,name:d.name,author:d.author||"",uid:d.uid,plays:d.plays|0,reports:d.reports|0,custom:1,pub:1,
   q:(d.q||[]).map(x=>[x.q,x.a,x.m&&x.m.r?{mid:"r_"+x.m.r,type:"image",r:x.m.r}:x.m&&x.m.t==="vid"&&x.m.u?{video:x.m.u}:null,x.l|0])}}
 /* صور الفقرات المنشورة: تنزل مرة وحدة وتنحفظ على الجهاز (IndexedDB) حتى تشتغل بدون نت */
-async function ensurePubMedia(cats){const C=CLOUD();if(!C||!MDB.db)return;let got=0;
-  for(const c of cats)for(const x of c.q){const m=x[2];if(!m||!m.r||MDB.urls[m.mid])continue;
-    try{const data=await C.media(m.r);if(data){await MDB.put(m.mid,await (await fetch(data)).blob());got++}}catch(e){}}
-  if(got&&(S.screen==="question"||S.screen==="board"))render()}
+const PUBGET={};
+function fetchPub(m){const C=CLOUD();if(!C||!MDB.db||!m||!m.r)return Promise.resolve(false);if(MDB.urls[m.mid])return Promise.resolve(true);
+  return PUBGET[m.mid]||(PUBGET[m.mid]=(async()=>{for(let t=0;t<3;t++){try{const data=await C.media(m.r);if(data&&await MDB.put(m.mid,await (await fetch(data)).blob())){
+      document.querySelectorAll(`[data-wait="${m.mid}"]`).forEach(e=>e.innerHTML=`<img src="${MDB.urls[m.mid]}" alt="">`);return true}}catch(e){}await new Promise(r=>setTimeout(r,800))}
+    delete PUBGET[m.mid];return false})())}
+async function ensurePubMedia(cats){const list=[];cats.forEach(c=>c.q.forEach(x=>{if(x[2]&&x[2].r&&!MDB.urls[x[2].mid])list.push(x[2])}));
+  let i=0;await Promise.all(Array.from({length:6},async()=>{while(i<list.length)await fetchPub(list[i++])}))}
 async function loadPub(force){const C=CLOUD();if(!C){PUBERR="off";return}
   if(PUBLOADING||(PUBLIST&&!force))return;PUBLOADING=true;PUBERR="";
   try{const r=await C.list(PUBSORT);if(r===null)PUBERR="net";else PUBLIST=r.map(toCat)}catch(e){PUBERR="net"}
@@ -894,7 +897,7 @@ function Cats(){
   wrap.addEventListener("scroll",()=>{S.catScroll=wrap.scrollTop;compact()},{passive:true});
   app.querySelectorAll(".chip[data-id]").forEach(b=>b.onclick=()=>{const id=b.dataset.id;
     const i=S.cats.indexOf(id);i>-1?S.cats.splice(i,1):S.cats.length<6&&S.cats.push(id);
-    if(id.startsWith("p_")){const c=findCat(id);if(c){PUB[id]=c;lsSet("lamma-pub",PUB)}}render()});
+    if(id.startsWith("p_")){const c=findCat(id);if(c){PUB[id]=c;lsSet("lamma-pub",PUB);if(S.cats.includes(id))ensurePubMedia([c])}}render()});
   app.querySelectorAll("[data-edit]").forEach(b=>b.onclick=()=>{const c=CUSTOM.find(x=>x.id===b.dataset.edit);if(c)openEditor(c)});
   const nc=document.getElementById("newcat");if(nc)nc.onclick=()=>openEditor(null);
   const imf=document.getElementById("impf");if(imf)imf.onchange=()=>{const f=imf.files&&imf.files[0];imf.value="";if(f)importFile(f)};
@@ -1148,7 +1151,8 @@ function mediaHTML(m){
   if(m.img)return `<div class="media"><img src="${esc(m.img)}" alt=""></div>`;
   if(m.video)return `<div class="media"><video src="${esc(m.video)}" controls playsinline></video></div>`;
   if(m.mid){const u=MDB.urls[m.mid];
-    if(!u)return `<div class="media"><p class="muted">${MDB.db?"الملف غير موجود على هذا الجهاز":"جاري تحميل الملف…"}</p></div>`;
+    if(!u){if(m.r&&MDB.db){fetchPub(m);return `<div class="media" data-wait="${m.mid}"><p class="muted">جاري تحميل الصورة…</p></div>`}
+      return `<div class="media"><p class="muted">${MDB.db?"الملف غير موجود على هذا الجهاز":"جاري تحميل الملف…"}</p></div>`}
     return m.type==="video"?`<div class="media"><video src="${u}" controls playsinline preload="metadata"></video></div>`:`<div class="media"><img src="${u}" alt=""></div>`}
   return "";
 }
