@@ -16,7 +16,7 @@
 <meta property="og:description" content="لمّة: لعبة أسئلة للجمعات. فريقين، 6 فقرات، وأكثر من 2500 سؤال على شاشة وحدة. العبوها مجاناً على التلفزيون أو الهاتف.">
 <meta property="og:image" content="https://lamma-game.com/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<script src="/cloud.js?v=mwggyru5" defer></script>
+<script src="/cloud.js?v=mwiav1dc" defer></script>
 <meta name="google-adsense-account" content="ca-pub-5902304972941230">
 <script async data-ad-client="ca-pub-5902304972941230" data-ad-frequency-hint="45s" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5902304972941230" crossorigin="anonymous"></script>
 <script>window.adsbygoogle=window.adsbygoogle||[];var adBreak=adConfig=function(o){adsbygoogle.push(o)};adConfig({preloadAdBreaks:"on",sound:"on"});</script>
@@ -960,7 +960,7 @@ function showPublish(c){
       if(r.skipped){bar.hidden=true;msg(`انتشرت ✓ بس ${r.skipped} فيديو ما انرفع لأنه أكبر من 15 ميغا، وبقى عندكم بس.`);go.textContent="تمام";go.disabled=false;go.onclick=()=>{close();S.catTab="crowd";render()};return}
       close();S.catTab="crowd";render();
     }catch(e){go.disabled=false;bar.hidden=true;
-      msg(e.message==="bad_words"?"بالفقرة كلمات غير مناسبة. عدّلوها وجرّبوا مرة ثانية.":e.message==="offline"?"ما اكو إنترنت. جرّبوا بعدين.":/permission/i.test(e.code||e.message)?"ما گدرنا ننشر من هذا الجهاز.":"صار خطأ بالنشر. تأكدوا من الإنترنت وجرّبوا مرة ثانية.")}
+      msg(e.message==="bad_words"?"بالفقرة كلمات غير مناسبة. عدّلوها وجرّبوا مرة ثانية.":e.message==="offline"?"ما اكو إنترنت. جرّبوا بعدين.":/permission/i.test(e.code||e.message)?(c.q.length>300?"الفقرة بيها أكثر من 300 سؤال. قسّموها فقرتين وانشروا كل وحدة.":"السيرفر رفض النشر. حدّثوا الصفحة وجرّبوا مرة ثانية.")+" ["+(e.code||"permission")+"]":"صار خطأ بالنشر. تأكدوا من الإنترنت وجرّبوا مرة ثانية. ["+(e.code||e.message||"")+"]")}
   };
 }
 function showReport(c){
@@ -987,7 +987,7 @@ function showReport(c){
 const PTS=[["200","t200"],["400","t400"],["600","t600"]];
 const newItem=(l=0)=>({q:"",a:"",l,m:null});
 
-/* استيراد فقرة من ملف: zip بيه index.txt (رقم | سؤال | جواب | نقاط) وصور مرقمة (meme-05.jpg)، أو txt وحده */
+/* استيراد فقرة من ملف: zip بيه index.txt (رقم | سؤال | جواب | نقاط) وصور أو فيديوهات مرقمة (meme-05.jpg / vid-05.mp4)، أو txt وحده */
 async function unzip(file){
   const buf=new Uint8Array(await file.arrayBuffer()),dv=new DataView(buf.buffer),out={};
   let e=-1;for(let i=buf.length-22;i>=Math.max(0,buf.length-70000);i--){if(dv.getUint32(i,true)===0x06054b50){e=i;break}}
@@ -1022,17 +1022,21 @@ async function importFile(f){
     else txt=await f.text();
     const {name,rows}=parseIndex(txt);
     if(!rows.length)return fail("الملف ما بيه أسئلة. كل سطر لازم يكون: رقم | السؤال | الجواب | النقاط");
-    const imgs={};Object.keys(files).forEach(k=>{const m=k.match(/(\d+)\.(jpe?g|png|webp|gif)$/i);if(m&&files[k])imgs[+m[1]]=files[k]});
-    const items=[];let done=0;const tot=rows.filter(r=>imgs[r.id]).length;
-    for(const r of rows){let m=null;const b=imgs[r.id];
-      if(b&&MDB.db){st(`نحفظ الصور ${++done} من ${tot}`);
-        const blob=await shrinkImage(new File([b],"i.jpg",{type:"image/jpeg"})),mid="m"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-        if(await MDB.put(mid,blob))m={mid,type:"image"}}
+    const imgs={},vids={},VT={mp4:"video/mp4",m4v:"video/mp4",mov:"video/quicktime",webm:"video/webm"};
+    Object.keys(files).forEach(k=>{if(!files[k])return;
+      let m=k.match(/(\d+)\.(jpe?g|png|webp|gif)$/i);if(m){imgs[+m[1]]=files[k];return}
+      m=k.match(/(\d+)\.(mp4|m4v|mov|webm)$/i);if(m)vids[+m[1]]=new Blob([files[k]],{type:VT[m[2].toLowerCase()]})});
+    const items=[];let done=0,nimg=0,nvid=0,big=0;const tot=rows.filter(r=>imgs[r.id]||vids[r.id]).length;
+    for(const r of rows){let m=null;const v=vids[r.id],b=imgs[r.id];
+      if((v||b)&&MDB.db){st(`نحفظ الصور والفيديوهات ${++done} من ${tot}`);
+        const mid="m"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+        if(v){if(v.size>40*1024*1024)big++;else if(await MDB.put(mid,v)){m={mid,type:"video"};nvid++}}
+        else{const blob=await shrinkImage(new File([b],"i.jpg",{type:"image/jpeg"}));if(await MDB.put(mid,blob)){m={mid,type:"image"};nimg++}}}
       items.push({q:r.q,a:r.a,l:r.l,m})}
     sh.remove();
     S.draft={id:null,name:(name||(/[؀-ۿ]/.test(f.name)?f.name.replace(/\.[^.]+$/,""):"")).slice(0,24),items};
     S.catTab="crowd";S.screen="editor";render();
-    const em=document.getElementById("emsg");if(em)em.textContent=`انضافت ${items.length} أسئلة${tot?` و${tot} صورة`:""}. راجعوها واضغطوا «حفظ الفقرة».`;
+    const em=document.getElementById("emsg");if(em)em.textContent=`انضافت ${items.length} أسئلة${nimg?` و${nimg} صورة`:""}${nvid?` و${nvid} فيديو`:""}.${big?` ${big} فيديو ما انضاف لأنه أكبر من 40 ميغا.`:""} راجعوها واضغطوا «حفظ الفقرة».`;
     if(!S.draft.name){const en=document.getElementById("ename");if(en)en.focus()}
   }catch(e){fail("الملف تالف أو مو zip صحيح.")}
 }
