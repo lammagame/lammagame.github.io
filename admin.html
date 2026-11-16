@@ -8,7 +8,7 @@
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
 :root{color-scheme:dark}
 body{margin:0;background:#0E0C0B;color:#fff;font-family:"Segoe UI",Tahoma,sans-serif;font-size:16px;line-height:1.6;padding:16px max(16px,env(safe-area-inset-right)) 40px max(16px,env(safe-area-inset-left))}
-main,header.top{max-width:900px;margin:0 auto}
+main,header.top{max-width:1000px;margin:0 auto}
 header.top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
 h1{margin:0;font-size:26px}h1 span{color:#FF6A13}
 button{font:inherit;font-weight:700;border:0;border-radius:10px;padding:8px 14px;background:#2E2824;color:#fff;cursor:pointer}
@@ -30,6 +30,11 @@ a{color:#FF7A2E}
 .bar{grid-column:1/-1;height:6px;background:#2E2824;border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:#FF6A13}
 .kpi{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px}.kpi div{background:#1A1715;border-radius:14px;padding:10px 16px}.kpi b{display:block;font-size:26px;color:#FF7A2E}
 .muted{color:#CDC4BB;font-size:13px}
+.kpi small{color:#CDC4BB;font-size:13px;margin-inline-start:6px}.kpi .ok b{color:#2BB673}.kpi .bad b{color:#FF5A63}
+.rng{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:12px}.rng .cust{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap;color:#CDC4BB;font-size:14px}
+input[type=date]{font:inherit;background:#2E2824;color:#fff;border:0;border-radius:10px;padding:6px 10px;color-scheme:dark}
+.sec{margin:14px 0 8px;font-size:18px}.box.wide{margin-bottom:12px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse;font-size:14px;white-space:nowrap}th,td{padding:6px 10px;text-align:start;border-bottom:1px solid #2E2824}th{color:#CDC4BB;font-weight:700}td:not(:first-child),th:not(:first-child){text-align:center;font-variant-numeric:tabular-nums}
 </style>
 <header class="top"><h1>مشرف لمّ<span>ة</span></h1><div><small id="who"></small> <button id="in" type="button">دخول بجوجل</button><button id="out" type="button" hidden>خروج</button></div></header>
 <main id="main" hidden>

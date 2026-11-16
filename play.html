@@ -16,7 +16,7 @@
 <meta property="og:description" content="لمّة: لعبة أسئلة للجمعات. فريقين، 6 فقرات، وأكثر من 2500 سؤال على شاشة وحدة. العبوها مجاناً على التلفزيون أو الهاتف.">
 <meta property="og:image" content="https://lamma-game.com/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<script src="/cloud.js?v=mwid60is" defer></script>
+<script src="/cloud.js?v=mwjd3z2b" defer></script>
 <meta name="google-adsense-account" content="ca-pub-5902304972941230">
 <script async data-ad-client="ca-pub-5902304972941230" data-ad-frequency-hint="45s" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5902304972941230" crossorigin="anonymous"></script>
 <script>window.adsbygoogle=window.adsbygoogle||[];var adBreak=adConfig=function(o){adsbygoogle.push(o)};adConfig({preloadAdBreaks:"on",sound:"on"});</script>
@@ -858,8 +858,10 @@ function Start(){
 
 /* ---------- 2. اختيار الفقرات ---------- */
 /* إحصائيات مجهولة: نعرف أي الفقرات تنلعب أكثر حتى نزيد أسئلتها. فقرات الجمهور تنحسب «custom» بدون اسمها */
+const catKey=id=>{const c=findCat(id);return !c?"?":c.custom?(String(id).startsWith("p_")||c.pub?"crowd":"custom"):id};
+const ev=(k,n)=>{try{const C=CLOUD();C&&C.ev&&C.ev(k,n)}catch(e){}};
 function trackGame(){
-  try{const C=CLOUD();if(C&&C.stat)C.stat(S.cats.map(id=>{const c=findCat(id);return !c?"?":c.custom?(String(id).startsWith("p_")||c.pub?"crowd":"custom"):id}))}catch(e){}
+  try{const C=CLOUD();if(C&&C.stat)C.stat(S.cats.map(catKey))}catch(e){}
   if(!NATIVE||!window.LammaNative.track)return;
   window.LammaNative.track("game_start",{cats:S.cats.length});
   S.cats.forEach(id=>{const c=findCat(id);window.LammaNative.track("category_played",c&&!c.custom?{category_id:id,category_name:c.name}:{category_id:"custom"})})}
@@ -914,7 +916,7 @@ function Cats(){
   const rt=document.getElementById("pubretry");if(rt)rt.onclick=()=>{PUBERR="";PUBLIST=null;render()};
   app.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>{S.catTab=b.dataset.tab;S.catScroll=0;render()});
   document.getElementById("back").onclick=()=>{S.screen="start";render()};
-  document.getElementById("go").onclick=()=>{S.used={};S.scores=[0,0];S.turn=0;S.life=freshLife();S.swapUsed=[];sinceAd=0;buildPicks();trackGame();
+  document.getElementById("go").onclick=()=>{S.done=0;S.early=0;S.used={};S.scores=[0,0];S.turn=0;S.life=freshLife();S.swapUsed=[];sinceAd=0;buildPicks();trackGame();
     /* الفقرات العامة المختارة تنحفظ على الجهاز حتى تكمل اللعبة بدون نت، وينحسب لعبها */
     const keep={};S.cats.filter(id=>id.startsWith("p_")).forEach(id=>{const c=findCat(id);if(c){keep[id]=c;CLOUD()&&CLOUD().played(c.pid)}});PUB=keep;lsSet("lamma-pub",PUB);ensurePubMedia(Object.values(PUB));
     S.screen="board";render()};
@@ -1158,7 +1160,7 @@ function confirmEnd(){
   document.body.appendChild(d);
   d.querySelector("#n").onclick=()=>d.remove();
   d.onclick=e=>{if(e.target===d)d.remove()};
-  d.querySelector("#y").onclick=()=>{d.remove();S.screen="end";render()};
+  d.querySelector("#y").onclick=()=>{d.remove();S.early=1;S.screen="end";render()};
 }
 
 /* ---------- 4. السؤال ---------- */
@@ -1207,7 +1209,7 @@ function wordQR(word){
 }
 
 function Question(){
-  const q=S.q;q.src=q.src||{id:q.id,i:tileSrc(q.id,q.i)};q.letter=q.letter||[0,0];q.double=q.double||[0,0];
+  const q=S.q;if(!q.src){q.src={id:q.id,i:tileSrc(q.id,q.i)};ev("o__"+catKey(q.id))}q.letter=q.letter||[0,0];q.double=q.double||[0,0];
   markSeen(q.src.id,q.src.i);
   const c=findCat(q.src.id),v=VALUES[q.i],entry=c.q[q.src.i],charades=c.kind==="charades";
   const text=charades?"":entry[0],ans=charades?entry[0]:entry[1],media=charades?null:entry[2];
@@ -1307,6 +1309,7 @@ function Reveal(q,c,v,ans,first,second,pillCls,swapped){
   document.getElementById("next").onclick=()=>{
     if(!(q.right[0]||q.right[1]||q.nobody))return;
     if(q.right[0])S.scores[0]+=v; if(q.right[1])S.scores[1]+=v;
+    ev((q.right[0]||q.right[1]?"r__":"w__")+catKey(q.id));
     bumpTeam=q.right[0]&&q.right[1]?2:q.right[0]?0:q.right[1]?1:-1;
     if(bumpTeam>=0)beep(1200,.15,.08);
     S.used[q.id+":"+q.i]=bumpTeam===2?"ab":bumpTeam===0?"a":bumpTeam===1?"b":"x";
@@ -1320,6 +1323,7 @@ function Reveal(q,c,v,ans,first,second,pillCls,swapped){
 
 /* ---------- 5. النهاية ---------- */
 function End(){
+  if(!S.done){S.done=1;ev(S.early?"g_early":"g_end");try{const C=CLOUD();C&&C.flush&&C.flush()}catch(e){}try{save()}catch(e){}}
   const [a,b]=S.scores,w=a===b?-1:a>b?0:1;
   app.innerHTML=`${topBar()}
   <div class="win">${w<0?`<p class="crown">انتهت اللعبة</p><h2>تعادل!</h2>`:
