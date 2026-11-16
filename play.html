@@ -16,7 +16,7 @@
 <meta property="og:description" content="لمّة: لعبة أسئلة للجمعات. فريقين، 6 فقرات، وأكثر من 2500 سؤال على شاشة وحدة. العبوها مجاناً على التلفزيون أو الهاتف.">
 <meta property="og:image" content="https://lamma-game.com/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<script src="/cloud.js?v=mwiav1dc" defer></script>
+<script src="/cloud.js?v=mwid60is" defer></script>
 <meta name="google-adsense-account" content="ca-pub-5902304972941230">
 <script async data-ad-client="ca-pub-5902304972941230" data-ad-frequency-hint="45s" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5902304972941230" crossorigin="anonymous"></script>
 <script>window.adsbygoogle=window.adsbygoogle||[];var adBreak=adConfig=function(o){adsbygoogle.push(o)};adConfig({preloadAdBreaks:"on",sound:"on"});</script>
@@ -211,6 +211,8 @@ input[type=text]:focus{border-color:var(--orange);outline:none}
 .side.next small{font-weight:700;font-size:.72em;opacity:.85}
 .side:disabled{background:var(--surface);color:var(--ink-muted);border-color:var(--hairline);cursor:not-allowed}
 .ansbox{background:var(--surface);border-radius:var(--r-lg);padding:clamp(10px,3vh,32px) clamp(12px,2vw,32px);display:flex;flex-direction:column;gap:clamp(6px,2vh,20px);min-height:0;min-width:0;position:relative}
+.ansbox .media{flex:3 1 0;margin-top:clamp(22px,6vh,48px)}
+.ans-main.has-am{flex:1 1 0;margin-top:0}
 .ans-main{flex:1 1 0;min-height:0;display:flex;flex-direction:column;align-items:center;text-align:center;margin-top:clamp(24px,7vh,60px);gap:2px;overflow:hidden}
 .ans-lbl{font-weight:800;font-size:clamp(13px,3.2vh,22px);color:var(--ink-muted)}
 .ans-val{flex:1 1 0;min-height:0;width:100%;display:grid;place-items:center;overflow:hidden;font-weight:900;font-size:clamp(20px,12vh,110px);line-height:1.2;text-wrap:balance;color:var(--ink)}
@@ -574,8 +576,8 @@ const mdbReady=MDB.open().then(ok=>ok?MDB.loadAll():null).then(()=>{if(["questio
 /* نحذف الصور التي لم تعد مستخدمة في أي فقرة ولا في المسودة */
 async function gcMedia(){
   if(!MDB.db)return;const used=new Set();
-  CUSTOM.concat(Object.values(PUB)).forEach(c=>c.q.forEach(x=>{if(x[2]&&x[2].mid)used.add(x[2].mid)}));
-  if(S.draft)S.draft.items.forEach(it=>{if(it.m)used.add(it.m.mid)});
+  CUSTOM.concat(Object.values(PUB)).forEach(c=>c.q.forEach(x=>{if(x[2]&&x[2].mid)used.add(x[2].mid);if(x[4]&&x[4].mid)used.add(x[4].mid)}));
+  if(S.draft)S.draft.items.forEach(it=>{if(it.m)used.add(it.m.mid);if(it.am)used.add(it.am.mid)});
   (await MDB.keys()).forEach(k=>{if(!used.has(k))MDB.del(k)});
 }
 function saveCustom(){try{localStorage.setItem("lamma-custom",JSON.stringify(CUSTOM))}catch(e){}}
@@ -594,7 +596,7 @@ const lsSet=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 let PUB=ls("lamma-pub",{}),BLOCKED=ls("lamma-blocked",[]),HIDE=ls("lamma-hide",[]);
 let PUBLIST=null,PUBERR="",PUBSORT="new",PUBLOADING=false;
 function toCat(d){return {id:"p_"+d.id,pid:d.id,name:d.name,author:d.author||"",uid:d.uid,plays:d.plays|0,reports:d.reports|0,custom:1,pub:1,
-  q:(d.q||[]).map(x=>[x.q,x.a,x.m&&x.m.r?{mid:"r_"+x.m.r,type:"image",r:x.m.r}:x.m&&x.m.t==="vid"&&x.m.u?{video:x.m.u}:null,x.l|0])}}
+  q:(d.q||[]).map(x=>{const mm=m=>m&&m.r?{mid:"r_"+m.r,type:"image",r:m.r}:m&&m.t==="vid"&&m.u?{video:m.u}:null;return [x.q,x.a,mm(x.m),x.l|0,mm(x.am)]})}}
 /* صور الفقرات المنشورة: تنزل مرة وحدة وتنحفظ على الجهاز (IndexedDB) حتى تشتغل بدون نت */
 const PUBGET={};
 function fetchPub(m){const C=CLOUD();if(!C||!m||!m.r)return Promise.resolve(false);if(MDB.urls[m.mid])return Promise.resolve(true);
@@ -606,7 +608,7 @@ function fetchPub(m){const C=CLOUD();if(!C||!m||!m.r)return Promise.resolve(fals
       return true}}catch(e){}await new Promise(r=>setTimeout(r,800))}
     document.querySelectorAll(`[data-wait="${m.mid}"]`).forEach(e=>e.innerHTML=`<p class="muted">ما گدرنا نحمّل الصورة. تأكدوا من الإنترنت.</p>`);
     delete PUBGET[m.mid];return false})())}
-async function ensurePubMedia(cats){await Promise.race([mdbReady,new Promise(r=>setTimeout(r,1500))]);const list=[];cats.forEach(c=>c.q.forEach(x=>{if(x[2]&&x[2].r&&!MDB.urls[x[2].mid])list.push(x[2])}));
+async function ensurePubMedia(cats){await Promise.race([mdbReady,new Promise(r=>setTimeout(r,1500))]);const list=[];cats.forEach(c=>c.q.forEach(x=>{[x[2],x[4]].forEach(m=>{if(m&&m.r&&!MDB.urls[m.mid])list.push(m)})}));
   let i=0;await Promise.all(Array.from({length:6},async()=>{while(i<list.length)await fetchPub(list[i++])}))}
 async function loadPub(force){const C=CLOUD();if(!C){PUBERR="off";return}
   if(PUBLOADING||(PUBLIST&&!force))return;PUBLOADING=true;PUBERR="";
@@ -951,9 +953,8 @@ function showPublish(c){
     if(!d.querySelector("#pterms").checked){msg("لازم توافقون على التعهد حتى تنشرون.");return}
     lsSet("lamma-author",author);go.disabled=true;msg("جاري التجهيز…");
     try{
-      const items=await Promise.all(c.q.map(async x=>{const m=x[2];let blob=null;
-        if(m&&m.mid&&MDB.urls[m.mid]){try{blob=await (await fetch(MDB.urls[m.mid])).blob()}catch(e){}}
-        return {q:x[0],a:x[1],l:x[3]|0,blob}}));
+      const gb=async m=>{if(m&&m.mid&&MDB.urls[m.mid]){try{return await (await fetch(MDB.urls[m.mid])).blob()}catch(e){}}return null};
+      const items=await Promise.all(c.q.map(async x=>({q:x[0],a:x[1],l:x[3]|0,blob:await gb(x[2]),ablob:await gb(x[4])})));
       bar.hidden=false;
       const id=await C.publish({name:c.name,author,items},p=>{bar.firstChild.style.width=Math.round(p*100)+"%";msg("جاري رفع الصور والفيديوهات… "+Math.round(p*100)+"%")});
       const r=await Promise.resolve(id);c.pubId=r.id||r;saveCustom();PUBLIST=null;
@@ -1022,17 +1023,19 @@ async function importFile(f){
     else txt=await f.text();
     const {name,rows}=parseIndex(txt);
     if(!rows.length)return fail("الملف ما بيه أسئلة. كل سطر لازم يكون: رقم | السؤال | الجواب | النقاط");
-    const imgs={},vids={},VT={mp4:"video/mp4",m4v:"video/mp4",mov:"video/quicktime",webm:"video/webm"};
+    /* ملفات السؤال: أي اسم بيه رقم (pic-05.jpg / vid-05.mp4). ملفات الجواب: تبدي بـans (ans-05.jpg / ans-05.mp4) */
+    const QM={},AM={},VT={mp4:"video/mp4",m4v:"video/mp4",mov:"video/quicktime",webm:"video/webm"};
     Object.keys(files).forEach(k=>{if(!files[k])return;
-      let m=k.match(/(\d+)\.(jpe?g|png|webp|gif)$/i);if(m){imgs[+m[1]]=files[k];return}
-      m=k.match(/(\d+)\.(mp4|m4v|mov|webm)$/i);if(m)vids[+m[1]]=new Blob([files[k]],{type:VT[m[2].toLowerCase()]})});
-    const items=[];let done=0,nimg=0,nvid=0,big=0;const tot=rows.filter(r=>imgs[r.id]||vids[r.id]).length;
-    for(const r of rows){let m=null;const v=vids[r.id],b=imgs[r.id];
-      if((v||b)&&MDB.db){st(`نحفظ الصور والفيديوهات ${++done} من ${tot}`);
-        const mid="m"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-        if(v){if(v.size>40*1024*1024)big++;else if(await MDB.put(mid,v)){m={mid,type:"video"};nvid++}}
-        else{const blob=await shrinkImage(new File([b],"i.jpg",{type:"image/jpeg"}));if(await MDB.put(mid,blob)){m={mid,type:"image"};nimg++}}}
-      items.push({q:r.q,a:r.a,l:r.l,m})}
+      const m=k.match(/(\d+)\.(jpe?g|png|webp|gif|mp4|m4v|mov|webm)$/i);if(!m)return;
+      const ext=m[2].toLowerCase(),vid=!!VT[ext],T=/^ans/i.test(k)?AM:QM,n=+m[1];
+      if(T[n]&&T[n].vid&&!vid)return;
+      T[n]={vid,blob:vid?new Blob([files[k]],{type:VT[ext]}):files[k]}});
+    const items=[];let done=0,nimg=0,nvid=0,big=0;const tot=rows.reduce((t,r)=>t+(QM[r.id]?1:0)+(AM[r.id]?1:0),0);
+    const keep=async f=>{if(!f||!MDB.db)return null;st(`نحفظ الصور والفيديوهات ${++done} من ${tot}`);
+      const mid="m"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+      if(f.vid){if(f.blob.size>40*1024*1024){big++;return null}if(await MDB.put(mid,f.blob)){nvid++;return {mid,type:"video"}}return null}
+      const blob=await shrinkImage(new File([f.blob],"i.jpg",{type:"image/jpeg"}));if(await MDB.put(mid,blob)){nimg++;return {mid,type:"image"}}return null};
+    for(const r of rows){const m=await keep(QM[r.id]),am=await keep(AM[r.id]);items.push({q:r.q,a:r.a,l:r.l,m,am})}
     sh.remove();
     S.draft={id:null,name:(name||(/[؀-ۿ]/.test(f.name)?f.name.replace(/\.[^.]+$/,""):"")).slice(0,24),items};
     S.catTab="crowd";S.screen="editor";render();
@@ -1041,7 +1044,7 @@ async function importFile(f){
   }catch(e){fail("الملف تالف أو مو zip صحيح.")}
 }
 function openEditor(c){
-  S.draft={id:c?c.id:null,name:c?c.name:"",items:c?c.q.map(x=>({q:x[0],a:x[1],l:x[3]||0,m:x[2]&&x[2].mid?x[2]:null})):[newItem(0)]};
+  S.draft={id:c?c.id:null,name:c?c.name:"",items:c?c.q.map(x=>({q:x[0],a:x[1],l:x[3]||0,m:x[2]&&x[2].mid?x[2]:null,am:x[4]&&x[4].mid?x[4]:null})):[newItem(0)]};
   S.catTab="crowd";S.screen="editor";render();
 }
 function draftStats(d){const n=[0,0,0];d.items.forEach(it=>n[it.l]++);return {n,rounds:Math.min(...n.map(x=>Math.floor(x/2)))}}
@@ -1052,7 +1055,7 @@ function shrinkImage(file){return new Promise(res=>{const img=new Image(),u=URL.
 function Editor(){
   const d=S.draft;if(!d){S.screen="cats";render();return}
   const st=draftStats(d);
-  const card=(it,i)=>{const mu=it.m&&MDB.urls[it.m.mid];
+  const card=(it,i)=>{const mu=it.m&&MDB.urls[it.m.mid],au=it.am&&MDB.urls[it.am.mid];
     return `<section class="qcard" data-i="${i}">
       <div class="qc-head"><span class="qc-num">سؤال ${i+1}</span>
         <div class="qc-pts" role="group" aria-label="نقاط السؤال">${PTS.map(([p,cls],l)=>`<button type="button" class="ptbtn ${cls} ${it.l===l?"on":""}" data-pt="${l}" aria-pressed="${it.l===l}">${p}</button>`).join("")}</div>
@@ -1066,6 +1069,10 @@ function Editor(){
             <button type="button" class="link" data-rm="${i}">إزالة</button>`
           :`<label class="addmedia" for="f${i}">+ صورة أو فيديو<small>اختياري</small></label>`}
           <input type="file" id="f${i}" data-file="${i}" accept="image/*,video/*" hidden></div>
+        <div class="qc-media">${it.am?`${au?(it.am.type==="video"?`<video src="${au}" muted playsinline preload="metadata"></video>`:`<img src="${au}" alt="">`):`<span class="muted small">ملف</span>`}
+            <button type="button" class="link" data-arm="${i}">إزالة</button>`
+          :`<label class="addmedia" for="af${i}">+ صورة أو فيديو للجواب<small>يطلع ويا الإجابة</small></label>`}
+          <input type="file" id="af${i}" data-file="${i}" data-ans="1" accept="image/*,video/*" hidden></div>
       </div></section>`};
   app.innerHTML=`${topBar("",`<button class="link" id="ecancel" type="button">رجوع</button>`)}
   <div class="editor">
@@ -1089,6 +1096,7 @@ function Editor(){
   app.querySelectorAll("[data-pt]").forEach(b=>b.onclick=()=>{const i=+b.closest(".qcard").dataset.i;d.items[i].l=+b.dataset.pt;rerender()});
   app.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{const i=+b.dataset.del;d.items.splice(i,1);if(!d.items.length)d.items.push(newItem(0));rerender()});
   app.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{d.items[+b.dataset.rm].m=null;rerender()});
+  app.querySelectorAll("[data-arm]").forEach(b=>b.onclick=()=>{d.items[+b.dataset.arm].am=null;rerender()});
   app.querySelectorAll("[data-file]").forEach(inp=>inp.onchange=async()=>{
     const f=inp.files&&inp.files[0];if(!f)return;const i=+inp.dataset.file,msg=document.getElementById("emsg");
     const video=f.type.startsWith("video/");
@@ -1097,7 +1105,7 @@ function Editor(){
     if(!MDB.db){msg.textContent="ما نقدر نحفظ الملفات على هذا الجهاز.";return}
     msg.textContent="جاري حفظ الملف…";
     const blob=video?f:await shrinkImage(f),mid="m"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-    if(await MDB.put(mid,blob)){sync();d.items[i].m={mid,type:video?"video":"image"};rerender()}else msg.textContent="ما تم حفظ الملف، يمكن ذاكرة الجهاز ممتلئة.";
+    if(await MDB.put(mid,blob)){sync();d.items[i][inp.dataset.ans?"am":"m"]={mid,type:video?"video":"image"};rerender()}else msg.textContent="ما تم حفظ الملف، يمكن ذاكرة الجهاز ممتلئة.";
   });
   document.getElementById("eadd").onclick=()=>{sync();const last=d.items[d.items.length-1];d.items.push(newItem(last?last.l:0));render();
     const e=app.querySelector(".editor");if(e)e.scrollTop=e.scrollHeight;const q=document.getElementById("q"+(d.items.length-1));if(q)q.focus()};
@@ -1108,7 +1116,7 @@ function Editor(){
     app.querySelectorAll(".qc-text input").forEach(inp=>{if(!inp.value.trim()){inp.classList.add("bad");bad++}});
     if(bad){msg.textContent="باقي "+bad+" خانات فارغة، معلّمة بالأحمر.";(app.querySelector(".bad")||nm).focus();return}
     if(draftStats(d).rounds<1){msg.textContent="تحتاجون سؤالين على الأقل من كل نقاط (200 و400 و600) حتى تنلعب الفقرة.";return}
-    const cat={id:d.id||("u"+Date.now().toString(36)),name:d.name.trim(),custom:1,q:d.items.map(it=>[it.q.trim(),it.a.trim(),it.m,it.l])};
+    const cat={id:d.id||("u"+Date.now().toString(36)),name:d.name.trim(),custom:1,q:d.items.map(it=>[it.q.trim(),it.a.trim(),it.m,it.l,it.am||null])};
     const i=CUSTOM.findIndex(x=>x.id===cat.id);i>-1?CUSTOM[i]=cat:CUSTOM.push(cat);
     if(SEEN[cat.id]){delete SEEN[cat.id];saveSeen()}
     saveCustom();beep(900,.12,.08);S.draft=null;gcMedia();
@@ -1272,12 +1280,14 @@ function Question(){
 
 function Reveal(q,c,v,ans,first,second,pillCls,swapped){
   const cls=["a","b"],picked=q.right[0]||q.right[1]||q.nobody;
+  const am=c.kind==="charades"?null:c.q[q.src.i][4],ov=document.querySelector(".ansbox video"),vt=ov?{t:ov.currentTime,p:ov.paused}:null;
   app.innerHTML=`${topBar(teamChips(-1),`<button class="link" id="back" type="button">رجوع للوحة</button>`)}
   <div class="reveal">
     <button class="side" id="peek" type="button"><span class="arrow" aria-hidden="true">→</span>ارجع للسؤال</button>
     <div class="ansbox">
       <div class="qmeta"><span class="qcat">${swapped?"سؤال بديل · ":""}${esc(c.name)}</span><span class="pill ${pillCls}">${v}</span></div>
-      <div class="ans-main"><span class="ans-lbl">${c.kind==="charades"?"الكلمة":"الإجابة"}</span><span class="ans-val"><span class="fitin">${esc(ans)}</span></span></div>
+      ${am?mediaHTML(am):""}
+      <div class="ans-main${am?" has-am":""}"><span class="ans-lbl">${c.kind==="charades"?"الكلمة":"الإجابة"}</span><span class="ans-val"><span class="fitin">${esc(ans)}</span></span></div>
       <div class="who">
         <p class="who-q">منو جاوب؟</p>
         <div class="who-row">
@@ -1289,6 +1299,7 @@ function Reveal(q,c,v,ans,first,second,pillCls,swapped){
     <button class="side next" id="next" type="button" ${picked?"":"disabled"}><span class="arrow" aria-hidden="true">←</span>التالي${picked&&!q.nobody?`<small>+${v} ${q.right[0]&&q.right[1]?"للفريقين":"نقطة"}</small>`:picked?"<small>بدون نقاط</small>":"<small>اختاروا منو جاوب</small>"}</button>
   </div>`;
   wireBar();
+  {const nv=document.querySelector(".ansbox video");if(nv){nv.loop=true;if(vt){try{nv.currentTime=vt.t}catch(e){}if(!vt.p)nv.play().catch(()=>{})}else nv.play().catch(()=>{})}}
   document.getElementById("back").onclick=()=>{S.q=null;S.screen="board";render()};
   document.getElementById("peek").onclick=()=>{q.peek=true;render()};
   app.querySelectorAll(".wbtn[data-t]").forEach(b=>b.onclick=()=>{const t=+b.dataset.t;q.right[t]=!q.right[t];if(q.right[t])q.nobody=false;render()});
