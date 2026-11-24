@@ -16,7 +16,7 @@
 <meta property="og:description" content="لمّة: لعبة أسئلة للجمعات. فريقين، 6 فقرات، وأكثر من 2500 سؤال على شاشة وحدة. العبوها مجاناً على التلفزيون أو الهاتف.">
 <meta property="og:image" content="https://lamma-game.com/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<script src="/cloud.js?v=mwtupec6" defer></script>
+<script src="/cloud.js?v=mwuoehhf" defer></script>
 <meta name="google-adsense-account" content="ca-pub-5902304972941230">
 <script async data-ad-client="ca-pub-5902304972941230" data-ad-frequency-hint="45s" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5902304972941230" crossorigin="anonymous"></script>
 <script>window.adsbygoogle=window.adsbygoogle||[];var adBreak=adConfig=function(o){adsbygoogle.push(o)};adConfig({preloadAdBreaks:"on",sound:"on"});</script>
@@ -598,15 +598,20 @@ const BANK = (()=>{const B=[{"id":"charades","name":"ولا كلمة","kind":"ch
     const groups={};
     for(const r of X.q){if(!Array.isArray(r)||r.length<4)continue;const nm=String(r[0]||"").trim(),q=String(r[1]||"").trim(),a=String(r[2]||"").trim(),l=lvOf(r[3]);if(!nm||!q||!a||l===undefined)continue;const im=String(r[4]||"").trim();const med=/^[\w.-]+\.(jpe?g|png|webp|gif)$/i.test(im)?{img:((window.LammaNative&&window.LammaNative.isNative)||!location.protocol.startsWith("http")?QB_URL:"/")+im}:null;(groups[nm]=groups[nm]||[]).push([q,a,med,l])}
     for(const nm in groups){let c=B.find(b=>b.name.trim()===nm||b.id===nm);const qs=groups[nm];
-      if(!c){const n=[0,1,2].map(l=>qs.filter(x=>x[3]===l).length);if(Math.min(...n)<2)continue;
+      if(!c){const n=[0,1,2].map(l=>qs.filter(x=>x[3]===l).length);if(Math.min(...n)<2){if(qs.length<6)continue;const k=qs.length/3;qs.forEach((x,i)=>x[3]=Math.min(2,Math.floor(i/k)))}
         c={id:"x_"+Array.from(nm).map(ch=>ch.charCodeAt(0).toString(36)).join("").slice(0,24),name:nm,lv:1,q:[]};B.push(c)}
       if(!c.lv){const n=c.q.length/3;c.q=c.q.map((q,i)=>[q[0],q[1],q[2]||null,Math.floor(i/n)]);c.lv=1}
       const have=new Set(c.q.map(q=>nn(q[0])));for(const q of qs)if(!have.has(nn(q[0]))){c.q.push(q);have.add(nn(q[0]))}}
   }}catch(e){}
   return B})();
-function qxUpdate(){if(!window.fetch)return;const ac=window.AbortController?new AbortController():null;setTimeout(()=>ac&&ac.abort(),10000);
+function qxUpdate(){if(!window.fetch)return;const ac=window.AbortController?new AbortController():null;setTimeout(()=>ac&&ac.abort(),12000);
   const base=(window.LammaNative&&window.LammaNative.isNative)?QB_URL:(location.protocol.startsWith("http")?"/":QB_URL);
-  fetch(base+"qb-extra.json?t="+Date.now(),{cache:"no-store",signal:ac&&ac.signal}).then(r=>r.ok?r.json():null).then(j=>{if(j&&Array.isArray(j.q))try{localStorage.setItem("lamma-qx",JSON.stringify({v:j.v||"",q:j.q}))}catch(e){}else if(j===null)0}).catch(()=>{})}
+  const parse=t=>{let j=null;t=String(t||"").replace(/^﻿/,"").replace(/^[^{\[]*/,"").replace(/[^}\]]*$/,"");if(!t)return [];try{j=JSON.parse(t)}catch(e){try{j=JSON.parse(t.replace(/\\n/g," ").replace(/[“”]/g,'"').replace(/,\s*([\]}])/g,"$1"))}catch(e2){return []}}
+    const pts=p=>{const n=parseInt(String(p).replace(/[^0-9]/g,""),10);return !n?200:n<=200?200:n<=400?400:600};
+    const arr=Array.isArray(j)?j:(j.q||j.questions||[]);const dc=j&&!Array.isArray(j)?(j.category||j.name||""):"";
+    return (Array.isArray(arr)?arr:[]).map(r=>Array.isArray(r)?[r[0],r[1],r[2],pts(r[3]),r[4]]:(r&&typeof r==="object")?[r.category||r.cat||dc,r.question||r.q,r.answer||r.a,pts(r.points||r.p),r.image||r.img||""]:null).filter(r=>r&&r[0]&&r[1]&&r[2])};
+  const names=["qb-extra.json"];for(let k=1;k<=30;k++)names.push("qx"+k+".json");let failed=false;
+  Promise.all(names.map(n=>fetch(base+n+"?t="+Date.now(),{cache:"no-store",signal:ac&&ac.signal}).then(r=>r.ok?r.text():"").then(parse).catch(()=>{failed=true;return []}))).then(all=>{if(failed)return;const q=[].concat(...all);try{localStorage.setItem("lamma-qx",JSON.stringify({v:Date.now(),q}))}catch(e){}})}
 setTimeout(qxUpdate,3500);
 function qbUpdate(){if(!(window.LammaNative&&window.LammaNative.isNative)||!window.fetch)return;
   const get=async u=>{const ac=window.AbortController?new AbortController():null;const t=setTimeout(()=>ac&&ac.abort(),10000);
