@@ -52,6 +52,15 @@ h2{font-weight:900;font-size:clamp(26px,4vw,40px);line-height:1.3;text-wrap:bala
 .soon{text-wrap:balance;border-radius:18px!important;line-height:1.5;display:inline-flex;align-items:center;gap:10px;margin-top:20px;padding:8px 16px;border-radius:999px;background:var(--surface);border:1px solid var(--line);font-weight:700;font-size:15px;color:var(--muted)}
 .soon i{width:10px;height:10px;border-radius:50%;background:var(--orange);font-style:normal;animation:pulse 1.6s infinite}
 @keyframes pulse{50%{opacity:.3}}
+.appstore{display:flex;align-items:center;gap:16px;margin-top:26px;padding:16px 28px;border-radius:22px;background:#fff;color:#0E0C0B;text-decoration:none;width:fit-content;max-width:100%;box-shadow:0 14px 40px rgb(255 106 19 / .28);transition:transform .15s}
+.appstore:hover{transform:translateY(-2px)}
+.appstore span{display:grid;line-height:1.15}
+.appstore small{font-size:clamp(15px,1.8vw,18px);font-weight:700;color:#3A332E}
+.appstore b{font-size:clamp(30px,4.4vw,44px);font-weight:900}
+.soon.android{font-size:15px;padding:6px 14px;margin-top:12px}
+.badge.live{background:var(--orange);color:var(--on-orange);text-decoration:none}
+.badge.live small{color:var(--on-orange)}
+@media (max-width:760px){.appstore{width:100%;justify-content:center}}
 /* أقسام */
 section{padding-block:clamp(36px,6vw,72px)}
 .sec-head{display:grid;gap:8px;margin-bottom:28px;max-width:62ch}
@@ -114,11 +123,15 @@ footer .logo{font-size:30px}
     <h1 class="logo">لمّ<span>ة</span></h1>
     <p class="tag">لعبة أسئلة للجمعات والعائلة والأصدقاء</p>
     <p class="lines">تقوّي معلوماتكم، تقوّي علاقتكم ببعض، <b>وتخلّيكم تتونّسون.</b><br>فريقين، 6 فقرات، وتحدّي على شاشة وحدة: التلفزيون أو الآيباد أو الهاتف.</p>
+    <a class="appstore" href="https://apps.apple.com/app/id6838073936" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" width="40" height="40" aria-hidden="true"><path fill="currentColor" d="M12 3a1 1 0 0 1 1 1v9.6l3.3-3.3a1 1 0 1 1 1.4 1.4l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.4L11 13.6V4a1 1 0 0 1 1-1Zm-7 15a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Z"/></svg>
+      <span><small>حمّل اللعبة الآن على</small><b dir="ltr">App Store</b></span>
+    </a>
+    <p class="soon android"><i></i>قريباً على <span dir="ltr">Google Play</span> للأندرويد</p>
     <div class="cta">
       <a class="btn btn-p" href="/play.html">العب الآن مجاناً</a>
       <a class="btn btn-g" href="#how">كيف نلعب؟</a>
     </div>
-    <p class="soon"><i></i>تطبيق لمّة قريباً على <span dir="ltr">App Store</span> و<span dir="ltr">Google Play</span></p>
   </div>
   <img src="/og-square.jpg" width="630" height="630" alt="عائلة تلعب لمّة أمام التلفزيون">
 </div></div>
@@ -171,10 +184,10 @@ footer .logo{font-size:30px}
 </div></section>
 
 <section id="apps"><div class="wrap"><div class="apps">
-  <h2>تطبيق لمّة قريباً</h2>
-  <p style="color:var(--muted)">على الآيفون والآيباد والأندرويد. تابعونا حتى تعرفون أول ما ينزل.</p>
+  <h2>لمّة صارت على App Store 🎉</h2>
+  <p style="color:var(--muted)">على الآيفون والآيباد، والأندرويد قريباً. تابعونا حتى تعرفون أول ما ينزل.</p>
   <div class="badges">
-    <div class="badge"><small>قريباً على</small><b>App Store</b></div>
+    <a class="badge live" href="https://apps.apple.com/app/id6838073936" target="_blank" rel="noopener"><small>حمّلها الآن من</small><b>App Store</b></a>
     <div class="badge"><small>قريباً على</small><b>Google Play</b></div>
   </div>
   <div class="cta" style="justify-content:center;margin-top:8px">
